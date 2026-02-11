@@ -1,0 +1,1001 @@
+Name,Age,Salary,Department,Joining Date,Experience,Bonus,Manager,Location,Notes
+  Alice  ,thirty,-5000,,2020/12/01,1,1000,John,,
+David,30,sixty thousand,HR,15/03/2020,2,2000,john,New York,
+Eve,35,-5000,it,2020/12/01,4,1000,john,London,average
+  Alice  ,25,70000,it,15/03/2020,3,,DOE ,new york,
+Charlie,nan,60000,HR,,five,1000,Doe,London,Poor
+Eve,nan,70000,Finance,15/03/2020,five,1000,,new york,Poor
+Eve,40,60000,HR,,3,2000,,new york,Poor
+  Alice  ,30,70000,it,2021-01-15,five,,,Paris,Excellent
+Bob,25,-5000,Finance,15/03/2020,five,one thousand,John,London,Poor
+Charlie,30,-5000,Finance,2020/12/01,4,one thousand,john,London,Poor
+  Alice  ,25,50000,HR,,3,-300,Doe,Paris,Excellent
+Charlie,40,sixty thousand,it,2020/12/01,nan,1000,John,,good
+Charlie,40,70000,,2022-06-30,1,-300,john,London,Good
+Eve,nan,,it,,1,2000,john,New York,
+David,30,50000,IT,15/03/2020,five,one thousand,Doe,Paris,Poor
+Charlie,-1,70000,HR ,,1,1000,Doe,London,
+,nan,70000,,2020/12/01,3,2000,Doe,,average
+Eve,30,50000,Finance,2021-01-15,3,2000,John,London,
+Bob,nan,-5000,,,2,1000,DOE ,new york,Excellent  
+David,-1,70000,Finance,15/03/2020,2,2000,Doe,New York,good
+,35,-5000,Finance,2022-06-30,1,1000,DOE ,Paris,Excellent
+,35,50000,,2021-01-15,nan,1000,John,new york,
+Bob,35,-5000,Finance,2022-06-30,2,,DOE ,,
+David,35,60000,Finance,,2,-300,,new york,
+Eve,thirty,,IT,2020/12/01,3,2000,DOE ,new york,Good
+Alice,25,70000,it,2020/12/01,nan,2000,Doe,,Good
+David,thirty,sixty thousand,it,15/03/2020,five,,John,new york,average
+Bob,thirty,,HR ,2020/12/01,1,,Doe,Paris,Excellent
+,thirty,-5000,HR ,2021-01-15,2,,,London,
+Eve,35,70000,IT,2020/12/01,nan,one thousand,Doe,new york,
+David,-1,-5000,HR ,15/03/2020,nan,one thousand,Doe,Paris,
+Alice,40,60000,,,1,one thousand,Doe,London,
+Alice,40,50000,HR,,nan,1000,john,London,Good
+Charlie,25,70000,HR,2020/12/01,nan,2000,,new york,good
+Charlie,35,60000,HR,2022-06-30,nan,-300,Doe,Paris,good
+  Alice  ,35,60000,IT,,2,1000,Doe,new york,average
+Bob,35,70000,IT,2020/12/01,1,2000,Doe,,Excellent  
+David,nan,-5000,Finance,15/03/2020,nan,2000,John,London,Poor
+David,30,sixty thousand,HR,2020/12/01,nan,,john,new york,Excellent
+  Alice  ,nan,60000,,,2,,John,London,good
+,30,,HR ,15/03/2020,1,1000,john,Paris,Excellent  
+,35,60000,,2020/12/01,3,,Doe,New York,
+  Alice  ,35,sixty thousand,HR ,2021-01-15,2,2000,,new york,good
+,nan,-5000,HR,15/03/2020,1,,DOE ,new york,average
+Charlie,nan,-5000,HR,2021-01-15,nan,one thousand,DOE ,London,Poor
+David,30,,HR,2022-06-30,1,,Doe,Paris,good
+  Alice  ,40,60000,IT,15/03/2020,1,2000,John,,average
+David,30,-5000,HR ,2021-01-15,five,1000,,Paris,Good
+Alice,nan,sixty thousand,IT,,1,-300,john,new york,Poor
+Charlie,-1,70000,IT,,3,,Doe,,average
+Eve,nan,50000,it,2022-06-30,1,2000,,Paris,Excellent  
+Charlie,-1,50000,,15/03/2020,3,-300,,New York,good
+  Alice  ,25,50000,,15/03/2020,nan,-300,john,London,Good
+Eve,nan,60000,Finance,15/03/2020,3,one thousand,,Paris,Excellent  
+Alice,25,,IT,2022-06-30,nan,-300,John,Paris,average
+  Alice  ,40,-5000,HR ,15/03/2020,nan,2000,John,New York,average
+Bob,30,70000,it,,3,2000,John,new york,Excellent  
+David,-1,sixty thousand,it,2021-01-15,2,,,London,good
+Alice,30,70000,,,4,,John,Paris,Poor
+David,25,sixty thousand,IT,,1,,john,,Good
+,-1,60000,Finance,2021-01-15,five,-300,,Paris,
+Bob,30,50000,IT,,4,-300,DOE ,London,Excellent
+Bob,nan,60000,HR,2022-06-30,1,one thousand,,Paris,Poor
+Alice,35,,IT,2021-01-15,1,,john,New York,Good
+Bob,25,,HR,,nan,1000,DOE ,Paris,Excellent  
+Eve,30,sixty thousand,HR,2020/12/01,1,one thousand,,Paris,average
+Bob,25,-5000,Finance,,five,1000,John,,Excellent  
+David,thirty,-5000,HR ,2022-06-30,1,-300,Doe,New York,Good
+David,25,sixty thousand,,15/03/2020,3,one thousand,Doe,New York,Excellent  
+  Alice  ,-1,,IT,,4,one thousand,John,Paris,Excellent  
+David,thirty,,HR,15/03/2020,3,2000,Doe,,Excellent
+  Alice  ,-1,,IT,2020/12/01,five,-300,Doe,Paris,good
+David,35,60000,HR ,,1,-300,John,Paris,Excellent
+Eve,thirty,,,2021-01-15,five,one thousand,John,London,
+  Alice  ,nan,70000,HR ,15/03/2020,nan,-300,,London,
+Charlie,25,50000,,2020/12/01,3,one thousand,,,Excellent
+,30,,it,2021-01-15,3,2000,John,new york,Poor
+Alice,40,sixty thousand,,2021-01-15,2,one thousand,john,London,Poor
+David,25,50000,Finance,2021-01-15,1,-300,Doe,new york,Excellent  
+Bob,25,60000,HR ,2021-01-15,nan,-300,,New York,Excellent  
+David,35,sixty thousand,HR,,3,one thousand,Doe,London,average
+Bob,nan,50000,it,,3,one thousand,DOE ,London,
+,40,sixty thousand,Finance,,nan,one thousand,John,,average
+,thirty,60000,IT,2020/12/01,five,,john,new york,
+,thirty,70000,HR ,2020/12/01,five,-300,DOE ,London,Excellent
+Bob,thirty,60000,HR,2020/12/01,1,-300,DOE ,London,Poor
+David,-1,60000,,2022-06-30,2,,DOE ,,Excellent  
+,-1,sixty thousand,HR,2020/12/01,3,one thousand,John,,Poor
+Eve,30,-5000,IT,,2,2000,,new york,Excellent
+  Alice  ,40,,it,,five,one thousand,John,New York,average
+Bob,thirty,,it,2022-06-30,five,one thousand,,New York,average
+Bob,-1,70000,HR ,2022-06-30,4,,DOE ,Paris,Good
+David,30,70000,it,2020/12/01,1,-300,DOE ,London,Excellent  
+Bob,nan,,HR ,15/03/2020,4,one thousand,john,new york,Excellent  
+Bob,30,-5000,HR ,2022-06-30,4,-300,,London,Excellent  
+,-1,,HR ,2021-01-15,4,1000,DOE ,new york,
+David,35,-5000,,,1,-300,Doe,new york,average
+,35,70000,Finance,2021-01-15,1,2000,john,new york,Excellent
+  Alice  ,thirty,50000,HR ,,nan,2000,John,London,average
+  Alice  ,35,sixty thousand,HR ,,2,one thousand,john,,Poor
+,thirty,70000,Finance,2022-06-30,2,-300,Doe,London,
+  Alice  ,thirty,70000,HR,2022-06-30,nan,one thousand,,new york,Excellent  
+David,-1,60000,HR ,2021-01-15,nan,,John,Paris,good
+Alice,35,60000,,,five,2000,John,New York,Good
+,thirty,60000,it,2021-01-15,4,one thousand,,new york,
+Eve,40,sixty thousand,it,15/03/2020,nan,,john,Paris,Poor
+Eve,nan,60000,IT,2021-01-15,3,one thousand,DOE ,,Excellent  
+Bob,30,-5000,IT,2020/12/01,2,-300,john,new york,Poor
+  Alice  ,30,,it,2021-01-15,nan,-300,Doe,Paris,Poor
+Eve,-1,50000,it,2020/12/01,3,-300,DOE ,new york,Excellent  
+Bob,35,70000,,2020/12/01,3,-300,john,London,Poor
+Alice,35,-5000,Finance,2020/12/01,3,1000,,Paris,Excellent
+David,thirty,50000,IT,15/03/2020,five,,Doe,London,Good
+David,25,-5000,Finance,2021-01-15,five,,Doe,London,good
+David,thirty,-5000,,2021-01-15,3,-300,Doe,Paris,Poor
+Eve,nan,70000,it,15/03/2020,five,1000,DOE ,New York,Poor
+Alice,40,,HR ,,4,-300,John,Paris,average
+Eve,30,60000,Finance,2022-06-30,3,1000,DOE ,New York,Good
+  Alice  ,thirty,sixty thousand,it,2021-01-15,4,-300,john,new york,
+Eve,25,,it,2022-06-30,4,2000,John,new york,Good
+Alice,25,sixty thousand,HR,15/03/2020,3,2000,john,Paris,Good
+Alice,thirty,70000,Finance,,2,one thousand,John,new york,Excellent  
+  Alice  ,-1,70000,HR ,,3,-300,DOE ,,Excellent  
+Alice,30,70000,Finance,,3,,Doe,London,Excellent  
+Alice,-1,50000,it,15/03/2020,five,one thousand,,London,good
+David,40,sixty thousand,HR ,2020/12/01,3,2000,Doe,New York,Good
+  Alice  ,25,,,2020/12/01,2,-300,DOE ,new york,good
+Charlie,25,,HR,2022-06-30,five,one thousand,John,New York,Poor
+Charlie,nan,-5000,it,2020/12/01,1,-300,Doe,London,Excellent  
+Alice,40,-5000,IT,2020/12/01,1,2000,DOE ,London,Poor
+Charlie,25,-5000,IT,,4,one thousand,john,new york,Excellent  
+Charlie,40,70000,HR,,4,2000,,,Excellent
+Alice,30,,,2022-06-30,2,1000,Doe,,good
+Charlie,35,sixty thousand,it,2021-01-15,nan,2000,John,new york,good
+Eve,25,70000,Finance,2022-06-30,1,-300,john,new york,
+Bob,nan,50000,HR,2022-06-30,4,,DOE ,New York,average
+  Alice  ,30,-5000,,15/03/2020,1,2000,,new york,Good
+Bob,thirty,70000,Finance,15/03/2020,2,,John,,
+Alice,40,70000,IT,2022-06-30,2,1000,DOE ,new york,good
+David,thirty,50000,IT,2022-06-30,nan,one thousand,DOE ,New York,
+  Alice  ,-1,60000,Finance,2022-06-30,nan,one thousand,Doe,New York,Excellent
+Alice,30,,HR,2020/12/01,five,,Doe,New York,average
+David,thirty,sixty thousand,IT,15/03/2020,2,one thousand,John,New York,good
+Bob,25,60000,it,2022-06-30,4,2000,DOE ,Paris,good
+Alice,40,-5000,HR ,,1,,Doe,new york,Good
+  Alice  ,35,70000,Finance,,3,-300,,London,Excellent  
+  Alice  ,30,50000,Finance,2020/12/01,nan,2000,,new york,average
+,25,50000,IT,2020/12/01,3,2000,DOE ,Paris,Excellent
+Eve,nan,,HR,2021-01-15,4,2000,Doe,New York,Poor
+Charlie,-1,60000,it,2021-01-15,nan,-300,John,Paris,
+David,40,,HR,2021-01-15,3,1000,John,,Good
+,30,70000,,2020/12/01,4,one thousand,John,,good
+Charlie,30,,,2020/12/01,1,,,new york,Poor
+Charlie,35,sixty thousand,HR ,2020/12/01,4,1000,Doe,new york,Excellent
+Alice,35,50000,IT,,five,,Doe,London,average
+Charlie,nan,50000,IT,2020/12/01,nan,one thousand,,London,
+Eve,-1,-5000,IT,,2,-300,John,,Good
+  Alice  ,nan,-5000,HR ,2021-01-15,1,2000,John,New York,good
+,25,70000,,2021-01-15,3,2000,DOE ,Paris,good
+Charlie,25,sixty thousand,HR,2021-01-15,nan,-300,john,London,Poor
+Alice,nan,60000,HR ,2022-06-30,2,1000,Doe,London,Poor
+Eve,-1,,HR ,2022-06-30,4,1000,Doe,New York,
+Bob,nan,70000,HR,15/03/2020,2,,Doe,New York,average
+  Alice  ,-1,-5000,IT,15/03/2020,nan,-300,john,new york,Excellent
+  Alice  ,-1,,it,15/03/2020,nan,1000,DOE ,Paris,Excellent  
+,thirty,-5000,HR,2022-06-30,five,-300,john,New York,average
+  Alice  ,40,,,2022-06-30,five,one thousand,John,London,average
+Charlie,-1,60000,Finance,15/03/2020,2,2000,John,London,average
+Alice,35,70000,Finance,15/03/2020,4,2000,Doe,,Excellent  
+  Alice  ,-1,,HR ,2020/12/01,2,2000,,New York,
+  Alice  ,-1,sixty thousand,Finance,15/03/2020,nan,-300,Doe,new york,Excellent  
+Bob,-1,50000,it,2020/12/01,nan,-300,,Paris,
+Bob,thirty,sixty thousand,IT,,3,,john,new york,Excellent  
+David,thirty,sixty thousand,,2022-06-30,five,2000,John,London,Excellent
+Eve,25,50000,it,15/03/2020,3,,,new york,average
+Charlie,thirty,sixty thousand,,2022-06-30,1,2000,john,London,
+  Alice  ,35,,,2022-06-30,nan,,John,London,Excellent  
+  Alice  ,35,,IT,2022-06-30,3,,,London,Excellent
+Alice,thirty,,HR ,,2,one thousand,Doe,London,Excellent  
+David,nan,50000,Finance,2021-01-15,five,,Doe,London,good
+Eve,40,sixty thousand,IT,15/03/2020,five,-300,Doe,,Excellent
+David,thirty,50000,it,2021-01-15,4,,john,new york,average
+,-1,,HR ,2021-01-15,2,2000,Doe,,Good
+Eve,30,sixty thousand,it,2021-01-15,4,,DOE ,,average
+  Alice  ,40,sixty thousand,HR ,2022-06-30,3,1000,John,New York,Good
+  Alice  ,40,-5000,it,2020/12/01,1,2000,john,New York,Excellent
+Eve,35,-5000,IT,2022-06-30,2,1000,Doe,New York,good
+  Alice  ,40,60000,HR ,2022-06-30,2,2000,John,Paris,good
+Charlie,thirty,70000,HR ,2021-01-15,2,-300,,New York,
+Eve,-1,-5000,,2022-06-30,4,-300,Doe,new york,good
+David,-1,50000,,2021-01-15,3,-300,John,,Poor
+Eve,25,-5000,HR,2020/12/01,2,1000,DOE ,new york,Excellent
+  Alice  ,-1,60000,it,15/03/2020,2,one thousand,,New York,
+Charlie,-1,sixty thousand,,2021-01-15,five,2000,DOE ,Paris,good
+Charlie,35,60000,HR,2020/12/01,1,-300,John,Paris,Excellent
+,-1,sixty thousand,,15/03/2020,five,2000,DOE ,,average
+David,25,sixty thousand,it,,five,1000,John,new york,good
+Bob,30,70000,HR ,2021-01-15,1,one thousand,John,London,Excellent  
+Bob,thirty,-5000,Finance,2021-01-15,3,1000,DOE ,new york,Good
+Eve,35,50000,it,,five,2000,John,New York,Excellent
+,30,50000,IT,,3,one thousand,Doe,London,
+Alice,35,,,2021-01-15,five,one thousand,John,Paris,average
+Eve,nan,sixty thousand,,,nan,1000,john,,Poor
+,40,50000,HR ,2022-06-30,1,-300,John,,average
+David,nan,70000,IT,15/03/2020,five,2000,john,Paris,good
+David,-1,sixty thousand,HR ,15/03/2020,nan,,John,New York,Good
+David,30,70000,IT,15/03/2020,4,,John,Paris,average
+David,-1,50000,Finance,2022-06-30,nan,1000,DOE ,New York,Poor
+David,40,50000,,,2,2000,Doe,London,Excellent  
+,35,,,2020/12/01,five,2000,Doe,Paris,
+,40,50000,Finance,,nan,1000,,New York,Excellent
+Charlie,25,sixty thousand,HR,2021-01-15,3,2000,DOE ,London,Good
+Bob,40,sixty thousand,HR ,15/03/2020,4,-300,DOE ,Paris,Poor
+  Alice  ,25,sixty thousand,Finance,,five,1000,Doe,,good
+David,40,,HR ,2020/12/01,2,-300,DOE ,Paris,good
+Alice,thirty,,it,2021-01-15,nan,2000,Doe,new york,good
+  Alice  ,25,50000,,2022-06-30,4,1000,DOE ,Paris,Good
+,30,60000,HR ,2022-06-30,five,2000,John,new york,average
+Alice,-1,60000,IT,2020/12/01,4,1000,Doe,London,Good
+Alice,-1,,HR ,2021-01-15,2,2000,Doe,Paris,good
+Alice,nan,50000,it,15/03/2020,nan,-300,john,London,Excellent  
+Charlie,-1,60000,,,4,-300,DOE ,London,Poor
+,35,50000,Finance,2021-01-15,4,2000,DOE ,New York,Excellent
+Alice,thirty,50000,it,2022-06-30,1,1000,Doe,London,Excellent
+David,40,50000,,2020/12/01,4,,John,London,Good
+Eve,nan,-5000,HR ,2020/12/01,1,-300,John,Paris,good
+Alice,35,sixty thousand,HR,,nan,-300,John,Paris,
+Charlie,35,50000,HR,2020/12/01,five,,DOE ,,Excellent  
+  Alice  ,25,-5000,IT,2020/12/01,five,2000,john,New York,Good
+,-1,,,2021-01-15,nan,1000,Doe,London,good
+Charlie,30,60000,HR,15/03/2020,nan,2000,,New York,average
+Alice,30,sixty thousand,Finance,,3,one thousand,john,new york,Excellent
+,nan,60000,,2021-01-15,nan,-300,,London,Excellent
+Eve,thirty,sixty thousand,Finance,15/03/2020,4,one thousand,john,New York,Excellent  
+Alice,30,60000,Finance,2021-01-15,five,-300,John,,Excellent
+Charlie,40,sixty thousand,HR,2021-01-15,2,-300,DOE ,,
+Bob,30,60000,,2020/12/01,five,one thousand,,London,good
+David,nan,60000,HR ,15/03/2020,1,one thousand,john,new york,good
+  Alice  ,30,60000,it,,five,2000,DOE ,,Excellent  
+Charlie,40,60000,HR,,3,one thousand,,,good
+,25,,HR,15/03/2020,nan,2000,Doe,new york,Excellent  
+Alice,thirty,50000,HR ,2020/12/01,nan,2000,john,New York,good
+David,nan,70000,,2022-06-30,five,2000,Doe,,
+Alice,25,-5000,,2021-01-15,2,-300,John,Paris,Poor
+,25,70000,Finance,2020/12/01,2,-300,Doe,,Good
+Alice,25,70000,HR ,15/03/2020,3,one thousand,Doe,New York,Good
+Bob,35,sixty thousand,HR ,2021-01-15,1,-300,john,New York,good
+David,thirty,50000,,,five,one thousand,John,London,average
+David,-1,sixty thousand,Finance,2022-06-30,nan,-300,Doe,Paris,Excellent
+,thirty,50000,HR,,five,1000,DOE ,New York,
+  Alice  ,35,50000,IT,15/03/2020,3,1000,,new york,average
+Bob,-1,60000,it,2021-01-15,4,one thousand,Doe,Paris,average
+Charlie,thirty,,HR,15/03/2020,4,-300,John,Paris,good
+Alice,25,60000,,2021-01-15,3,-300,Doe,new york,
+Eve,nan,,it,2020/12/01,nan,2000,,,Good
+Alice,-1,sixty thousand,IT,2022-06-30,3,,John,new york,Excellent
+Alice,40,,IT,2020/12/01,nan,one thousand,john,new york,Good
+Charlie,40,sixty thousand,Finance,2020/12/01,2,,John,,average
+Alice,30,70000,it,15/03/2020,3,,john,,Excellent
+Bob,-1,70000,Finance,2022-06-30,nan,one thousand,John,,Poor
+Bob,nan,,HR,2021-01-15,3,-300,,,average
+David,35,,HR ,2021-01-15,3,one thousand,,,Good
+,25,sixty thousand,HR ,,nan,,John,new york,Good
+  Alice  ,30,60000,HR ,2021-01-15,nan,-300,Doe,London,good
+Eve,40,sixty thousand,it,15/03/2020,1,1000,,London,Good
+Alice,35,60000,HR ,2020/12/01,3,one thousand,john,New York,
+Alice,35,70000,HR,2020/12/01,4,one thousand,john,London,average
+Charlie,25,50000,Finance,2020/12/01,3,-300,DOE ,London,Excellent  
+,-1,,it,2022-06-30,3,1000,john,new york,Excellent  
+Bob,40,60000,Finance,2021-01-15,nan,1000,DOE ,,Excellent
+Eve,nan,sixty thousand,it,15/03/2020,3,-300,John,,Good
+David,35,70000,Finance,2022-06-30,five,2000,John,new york,good
+Bob,25,60000,IT,,3,one thousand,John,London,good
+,nan,sixty thousand,Finance,15/03/2020,five,one thousand,Doe,new york,Good
+  Alice  ,-1,,HR ,15/03/2020,4,,Doe,New York,
+David,40,,IT,15/03/2020,nan,-300,DOE ,,good
+  Alice  ,-1,-5000,Finance,2020/12/01,3,,john,Paris,Excellent  
+Charlie,35,50000,it,15/03/2020,five,,john,New York,Excellent
+Charlie,nan,-5000,it,2021-01-15,five,1000,John,New York,average
+Alice,nan,70000,it,15/03/2020,five,one thousand,,new york,Poor
+  Alice  ,nan,60000,,2020/12/01,2,,Doe,London,
+,35,70000,HR,15/03/2020,1,1000,Doe,,good
+Eve,35,sixty thousand,it,,4,-300,John,Paris,average
+David,-1,,IT,,3,,Doe,New York,Poor
+Bob,30,-5000,it,2020/12/01,2,one thousand,John,Paris,Good
+,-1,-5000,,2021-01-15,3,,DOE ,London,Good
+,40,-5000,HR ,2021-01-15,3,-300,john,London,Excellent
+Charlie,25,70000,IT,2022-06-30,nan,,,Paris,Poor
+  Alice  ,nan,,,2020/12/01,nan,one thousand,john,,Good
+Alice,30,60000,HR ,15/03/2020,nan,1000,john,London,Good
+Alice,25,sixty thousand,IT,2020/12/01,2,one thousand,DOE ,Paris,Excellent  
+David,30,60000,Finance,2022-06-30,3,1000,Doe,New York,good
+Charlie,thirty,70000,HR,2020/12/01,1,2000,,Paris,Excellent
+,-1,sixty thousand,HR,2020/12/01,4,one thousand,Doe,Paris,average
+Eve,35,-5000,,2022-06-30,nan,one thousand,john,new york,Good
+Charlie,nan,50000,HR ,2021-01-15,nan,-300,John,London,Excellent  
+David,-1,70000,HR,15/03/2020,3,,john,,
+David,25,70000,HR ,2022-06-30,3,1000,Doe,,
+Charlie,thirty,,HR ,,2,1000,john,new york,average
+David,thirty,60000,,2021-01-15,2,-300,John,,Poor
+Charlie,thirty,70000,,,nan,-300,DOE ,Paris,Excellent
+Bob,25,70000,,2021-01-15,3,,Doe,new york,Excellent  
+Charlie,25,-5000,HR,15/03/2020,1,,john,New York,good
+  Alice  ,25,-5000,,15/03/2020,4,one thousand,Doe,London,Excellent  
+Charlie,25,sixty thousand,HR,2020/12/01,3,2000,DOE ,London,
+David,thirty,50000,,,3,,john,London,
+  Alice  ,thirty,,it,2021-01-15,five,-300,john,Paris,average
+David,30,50000,HR ,15/03/2020,2,,Doe,New York,Poor
+Alice,-1,sixty thousand,,2022-06-30,4,1000,Doe,new york,Poor
+Alice,nan,-5000,IT,15/03/2020,nan,2000,John,new york,average
+  Alice  ,35,60000,HR ,2022-06-30,3,one thousand,DOE ,London,Excellent  
+Bob,thirty,-5000,HR ,2021-01-15,nan,1000,John,New York,
+Alice,35,,,15/03/2020,3,1000,john,New York,Excellent  
+Charlie,-1,-5000,Finance,15/03/2020,nan,2000,Doe,New York,Excellent  
+David,-1,,,2021-01-15,4,one thousand,john,,Excellent
+Alice,35,,HR ,15/03/2020,2,-300,john,,
+Alice,thirty,,IT,2022-06-30,4,one thousand,,London,Poor
+Bob,35,sixty thousand,HR ,15/03/2020,five,,,New York,good
+  Alice  ,30,,IT,,1,1000,john,New York,Excellent  
+  Alice  ,40,,HR,2020/12/01,2,,Doe,new york,
+,thirty,60000,it,2022-06-30,4,-300,john,new york,Excellent  
+Bob,thirty,50000,HR ,,five,,,London,Excellent
+Charlie,nan,70000,,2021-01-15,1,one thousand,Doe,New York,Good
+  Alice  ,25,50000,HR,2022-06-30,five,,john,London,
+David,40,,it,2020/12/01,3,-300,DOE ,new york,average
+Bob,-1,60000,,2020/12/01,3,-300,DOE ,new york,Good
+Alice,thirty,-5000,Finance,2021-01-15,nan,-300,john,,Excellent  
+David,35,60000,,2021-01-15,2,one thousand,Doe,London,average
+David,40,,IT,2022-06-30,3,-300,john,London,average
+Alice,nan,60000,IT,15/03/2020,five,1000,john,New York,average
+Bob,-1,60000,Finance,2021-01-15,2,-300,,New York,
+Alice,25,,HR,15/03/2020,3,,DOE ,,Poor
+,25,sixty thousand,it,,nan,,,Paris,Excellent  
+David,nan,60000,,2020/12/01,4,,,Paris,Good
+Eve,nan,70000,IT,15/03/2020,nan,one thousand,john,Paris,Excellent
+Eve,35,70000,HR,2020/12/01,1,,,London,Poor
+Charlie,thirty,60000,Finance,15/03/2020,3,one thousand,DOE ,London,Excellent  
+  Alice  ,25,sixty thousand,HR ,,1,one thousand,,new york,
+Alice,-1,-5000,IT,2021-01-15,1,-300,DOE ,London,average
+Alice,40,,Finance,,five,1000,,London,Excellent
+Charlie,-1,70000,,2021-01-15,2,-300,DOE ,London,Excellent  
+Charlie,30,-5000,it,2021-01-15,five,-300,,,Good
+Charlie,30,60000,IT,2020/12/01,3,one thousand,,London,Excellent  
+David,nan,-5000,IT,,1,one thousand,Doe,New York,Poor
+,35,50000,,15/03/2020,4,,DOE ,New York,good
+Alice,30,70000,HR ,,1,,DOE ,new york,Poor
+David,25,60000,HR,2020/12/01,4,-300,DOE ,,Excellent  
+Charlie,-1,,it,2021-01-15,five,2000,John,New York,Excellent
+Alice,-1,sixty thousand,IT,2020/12/01,five,2000,,,Excellent  
+David,nan,60000,it,2022-06-30,2,,DOE ,,Excellent  
+,thirty,,IT,2022-06-30,1,2000,John,new york,
+David,thirty,sixty thousand,it,15/03/2020,nan,,Doe,,Good
+,40,sixty thousand,Finance,2020/12/01,five,one thousand,DOE ,London,Excellent
+Charlie,nan,60000,IT,15/03/2020,five,-300,DOE ,,Excellent  
+,40,-5000,it,15/03/2020,2,1000,John,new york,average
+Alice,thirty,-5000,HR,2022-06-30,4,-300,,new york,Good
+Charlie,nan,sixty thousand,Finance,15/03/2020,2,,Doe,new york,Poor
+Alice,nan,-5000,Finance,2022-06-30,1,,DOE ,New York,Excellent
+Eve,nan,50000,HR,2021-01-15,3,-300,,London,Poor
+Bob,thirty,sixty thousand,it,2020/12/01,3,,Doe,New York,Excellent  
+,40,sixty thousand,,15/03/2020,4,2000,john,Paris,Poor
+Bob,40,,HR,2022-06-30,five,2000,john,London,Poor
+Bob,nan,-5000,it,,4,,Doe,,
+,30,sixty thousand,HR,15/03/2020,five,,John,new york,Poor
+Charlie,35,50000,HR,2021-01-15,five,2000,Doe,Paris,average
+Eve,thirty,,IT,2021-01-15,3,,Doe,London,average
+Alice,35,60000,it,,4,,John,New York,Good
+David,35,sixty thousand,,2022-06-30,2,-300,John,new york,Excellent  
+Alice,40,50000,IT,15/03/2020,five,1000,,New York,good
+David,40,70000,HR,2022-06-30,nan,2000,,London,Poor
+Alice,30,50000,HR ,2021-01-15,nan,-300,John,London,Poor
+,35,50000,HR,2022-06-30,2,1000,john,Paris,Excellent
+Eve,35,,HR,2021-01-15,nan,,john,,
+David,nan,60000,it,2022-06-30,1,,Doe,New York,good
+  Alice  ,40,70000,it,,five,-300,DOE ,Paris,Good
+Charlie,35,-5000,IT,2020/12/01,2,,Doe,new york,good
+Alice,-1,-5000,,,4,one thousand,Doe,,Poor
+Alice,30,50000,IT,,five,-300,DOE ,Paris,Excellent
+David,-1,,Finance,2020/12/01,2,1000,John,New York,Excellent  
+Charlie,-1,,HR,2020/12/01,3,-300,john,London,
+Charlie,thirty,-5000,HR ,15/03/2020,4,2000,Doe,new york,Excellent  
+,thirty,70000,HR,15/03/2020,3,-300,DOE ,New York,Good
+  Alice  ,30,60000,HR,,five,,,,good
+,-1,70000,IT,,4,,Doe,,Good
+,35,sixty thousand,HR ,2021-01-15,nan,one thousand,john,London,Poor
+,40,sixty thousand,HR ,2021-01-15,2,one thousand,John,London,Good
+,30,60000,HR ,15/03/2020,five,one thousand,Doe,new york,Excellent  
+,nan,-5000,IT,15/03/2020,1,1000,Doe,new york,Excellent
+Eve,-1,60000,HR,2021-01-15,4,one thousand,DOE ,London,Good
+Charlie,30,,IT,2021-01-15,4,1000,,London,average
+,25,sixty thousand,it,2022-06-30,five,one thousand,,,Excellent
+Charlie,25,50000,it,2022-06-30,five,1000,John,London,good
+Charlie,thirty,50000,IT,2021-01-15,3,-300,john,Paris,
+Bob,40,-5000,HR ,2022-06-30,nan,-300,John,New York,
+Eve,35,,HR,2020/12/01,3,,Doe,London,Poor
+,40,70000,IT,15/03/2020,3,1000,Doe,new york,Poor
+Alice,40,,IT,15/03/2020,nan,2000,,Paris,average
+David,40,50000,IT,2021-01-15,1,,john,new york,good
+  Alice  ,40,50000,Finance,,3,-300,DOE ,Paris,Excellent  
+Alice,nan,sixty thousand,it,2021-01-15,3,1000,john,London,
+Eve,nan,,HR ,2022-06-30,4,one thousand,Doe,New York,
+David,thirty,,,,nan,2000,DOE ,new york,
+Eve,30,50000,HR ,2022-06-30,2,-300,john,Paris,Excellent  
+Charlie,25,70000,,2020/12/01,1,,john,,
+David,40,-5000,Finance,2022-06-30,1,1000,DOE ,London,Good
+Charlie,thirty,-5000,IT,2020/12/01,nan,2000,Doe,New York,good
+Alice,30,,Finance,2020/12/01,five,1000,john,London,Excellent
+Alice,25,-5000,Finance,2022-06-30,five,one thousand,DOE ,,Excellent
+David,-1,50000,HR,2022-06-30,4,,Doe,New York,average
+David,35,50000,it,2020/12/01,4,1000,DOE ,,Good
+,nan,,,,nan,-300,DOE ,London,
+Eve,-1,,IT,2020/12/01,4,,john,Paris,
+,25,sixty thousand,,15/03/2020,1,-300,Doe,London,Poor
+Eve,-1,,HR ,2020/12/01,1,1000,john,London,Poor
+,35,70000,,,2,,John,London,average
+Charlie,thirty,-5000,HR ,15/03/2020,five,-300,John,new york,
+David,25,,it,2021-01-15,nan,one thousand,Doe,,average
+Alice,-1,60000,HR ,2021-01-15,3,one thousand,DOE ,,Good
+Eve,nan,sixty thousand,,,five,1000,john,,Excellent
+Eve,nan,60000,,2020/12/01,3,,john,new york,
+Alice,30,50000,HR ,2022-06-30,2,2000,Doe,Paris,good
+,-1,-5000,Finance,,2,,Doe,London,Excellent  
+Eve,40,,it,15/03/2020,4,one thousand,John,Paris,Good
+  Alice  ,-1,60000,HR,15/03/2020,2,-300,,new york,
+Charlie,thirty,-5000,IT,2021-01-15,2,2000,Doe,,Excellent  
+David,25,50000,,15/03/2020,3,1000,,London,good
+Alice,25,70000,IT,,4,2000,Doe,New York,Poor
+David,thirty,sixty thousand,HR,15/03/2020,2,1000,DOE ,New York,average
+  Alice  ,-1,-5000,IT,,five,2000,DOE ,Paris,Poor
+Eve,thirty,-5000,HR,2022-06-30,2,1000,John,,Excellent
+Eve,35,70000,HR ,2021-01-15,4,1000,John,New York,Poor
+  Alice  ,thirty,-5000,Finance,15/03/2020,nan,2000,,Paris,
+Alice,nan,50000,,,4,2000,Doe,new york,good
+Charlie,thirty,50000,HR,2020/12/01,3,1000,john,Paris,Poor
+Bob,25,70000,IT,2021-01-15,nan,one thousand,John,Paris,
+Alice,nan,sixty thousand,,2022-06-30,five,2000,john,Paris,Excellent
+Bob,25,,Finance,,1,,john,London,Excellent  
+  Alice  ,30,60000,HR ,2022-06-30,4,-300,Doe,Paris,good
+,40,,,2022-06-30,3,1000,,Paris,Poor
+Bob,25,-5000,HR,15/03/2020,five,1000,Doe,London,average
+Charlie,nan,60000,Finance,15/03/2020,nan,-300,John,London,average
+,30,70000,IT,,five,one thousand,john,new york,good
+Bob,25,70000,Finance,2020/12/01,4,-300,Doe,,average
+  Alice  ,35,sixty thousand,Finance,,2,2000,Doe,New York,Poor
+,thirty,60000,it,2020/12/01,4,-300,Doe,New York,Poor
+  Alice  ,40,50000,Finance,2022-06-30,1,1000,John,Paris,good
+Bob,25,60000,Finance,2021-01-15,4,-300,,new york,Poor
+  Alice  ,30,-5000,,,nan,,Doe,Paris,Excellent  
+Charlie,35,50000,IT,,nan,2000,John,New York,
+Bob,-1,70000,,2020/12/01,4,-300,john,London,Excellent
+Bob,30,60000,,2022-06-30,nan,1000,DOE ,,Excellent  
+Bob,thirty,,HR,2022-06-30,2,2000,John,new york,Excellent  
+Alice,30,sixty thousand,,2020/12/01,five,1000,DOE ,London,average
+Alice,35,,it,2022-06-30,4,one thousand,Doe,,
+Alice,30,sixty thousand,it,15/03/2020,2,,Doe,new york,good
+Charlie,35,-5000,HR,2021-01-15,five,one thousand,John,new york,average
+,25,,HR ,,five,,DOE ,New York,
+  Alice  ,35,60000,IT,2021-01-15,2,-300,Doe,London,Poor
+Eve,35,60000,IT,,3,2000,john,new york,good
+Bob,40,,,15/03/2020,4,-300,,new york,good
+  Alice  ,35,60000,,2022-06-30,five,,,,average
+Bob,35,-5000,HR ,2020/12/01,five,,Doe,New York,Poor
+Charlie,-1,50000,,15/03/2020,nan,,DOE ,Paris,average
+Bob,25,-5000,IT,2021-01-15,five,1000,Doe,New York,Good
+Alice,thirty,sixty thousand,Finance,2020/12/01,2,2000,DOE ,Paris,
+Eve,40,-5000,it,2022-06-30,five,-300,john,London,Good
+David,-1,sixty thousand,Finance,15/03/2020,3,-300,DOE ,London,
+Bob,nan,60000,Finance,2020/12/01,4,one thousand,Doe,new york,Excellent
+  Alice  ,25,50000,IT,15/03/2020,4,,john,London,Excellent  
+Alice,25,60000,Finance,15/03/2020,five,,John,new york,good
+David,nan,70000,HR ,2022-06-30,1,,,New York,average
+Eve,thirty,60000,HR,,1,-300,Doe,London,Excellent
+David,35,sixty thousand,,2020/12/01,2,one thousand,Doe,New York,Excellent
+Alice,-1,60000,HR,2022-06-30,1,1000,Doe,New York,good
+,30,60000,it,15/03/2020,2,2000,john,London,good
+,40,50000,,2022-06-30,nan,1000,John,New York,
+David,30,60000,Finance,,2,-300,DOE ,London,Good
+Charlie,nan,50000,it,2020/12/01,1,,John,London,Poor
+  Alice  ,25,,,,five,2000,john,London,
+  Alice  ,thirty,70000,HR ,2021-01-15,nan,-300,Doe,Paris,Poor
+David,25,50000,HR ,2020/12/01,1,-300,,New York,Excellent
+Bob,40,sixty thousand,HR ,,2,-300,Doe,,Poor
+Bob,25,,HR ,15/03/2020,3,2000,DOE ,London,Good
+  Alice  ,25,50000,Finance,2020/12/01,4,2000,,New York,
+  Alice  ,40,50000,HR,2020/12/01,1,one thousand,Doe,new york,good
+,-1,70000,,2022-06-30,2,one thousand,,London,Good
+Charlie,-1,sixty thousand,Finance,15/03/2020,nan,1000,John,London,Excellent  
+Alice,40,-5000,HR ,2021-01-15,1,2000,john,,Good
+Bob,thirty,-5000,HR,,1,2000,Doe,Paris,Excellent  
+  Alice  ,nan,50000,it,2022-06-30,4,2000,DOE ,Paris,
+,25,60000,it,,2,one thousand,John,London,good
+Eve,thirty,sixty thousand,it,2021-01-15,3,-300,Doe,New York,Good
+,25,,HR ,2021-01-15,nan,,John,new york,Excellent  
+Bob,nan,60000,it,2020/12/01,2,one thousand,DOE ,new york,good
+Bob,-1,60000,IT,2021-01-15,nan,2000,Doe,New York,average
+,thirty,sixty thousand,,,1,one thousand,DOE ,London,average
+Alice,35,50000,,15/03/2020,4,1000,,new york,average
+David,35,50000,HR ,15/03/2020,4,2000,DOE ,Paris,Poor
+Bob,35,50000,IT,2020/12/01,five,1000,,New York,Good
+,-1,50000,Finance,,3,2000,Doe,,
+  Alice  ,-1,-5000,Finance,,4,one thousand,,London,
+,nan,50000,it,2021-01-15,1,-300,Doe,New York,Poor
+Charlie,25,-5000,HR,,3,,Doe,new york,
+David,nan,-5000,Finance,2022-06-30,2,1000,john,London,Excellent  
+Eve,nan,50000,HR,2021-01-15,4,one thousand,Doe,Paris,average
+Alice,-1,70000,,2022-06-30,3,-300,,London,Good
+Eve,35,,HR,2020/12/01,1,one thousand,john,London,
+David,30,60000,,15/03/2020,five,1000,john,Paris,
+David,25,-5000,IT,2020/12/01,nan,,Doe,Paris,Excellent
+David,-1,sixty thousand,IT,15/03/2020,nan,one thousand,DOE ,London,Excellent
+Eve,35,sixty thousand,HR ,2020/12/01,1,2000,DOE ,Paris,Excellent
+  Alice  ,thirty,,HR ,,1,-300,john,New York,Good
+David,30,sixty thousand,it,2022-06-30,nan,one thousand,Doe,Paris,average
+,30,70000,Finance,15/03/2020,five,-300,DOE ,Paris,good
+Eve,-1,sixty thousand,it,2021-01-15,3,2000,Doe,London,average
+David,40,60000,,2022-06-30,nan,,Doe,New York,average
+,25,60000,it,2021-01-15,1,,john,,Good
+  Alice  ,30,-5000,HR,2022-06-30,4,2000,john,,Excellent  
+Charlie,-1,50000,,2022-06-30,2,-300,John,new york,Excellent  
+  Alice  ,-1,70000,HR ,2020/12/01,five,one thousand,DOE ,Paris,Good
+David,35,-5000,IT,15/03/2020,five,2000,DOE ,Paris,Excellent
+Eve,thirty,70000,HR ,15/03/2020,4,1000,DOE ,New York,
+Bob,40,50000,Finance,2022-06-30,4,-300,,,Poor
+David,25,sixty thousand,,,1,,Doe,new york,Poor
+Bob,nan,sixty thousand,,,nan,2000,john,New York,good
+,thirty,50000,HR,2021-01-15,3,,DOE ,Paris,
+Charlie,thirty,-5000,Finance,2021-01-15,five,-300,John,,good
+Alice,35,50000,IT,2020/12/01,five,,DOE ,new york,Excellent
+  Alice  ,30,,,2022-06-30,4,2000,Doe,London,good
+Charlie,30,60000,,2021-01-15,nan,-300,Doe,,
+David,35,-5000,HR,2021-01-15,five,1000,john,new york,
+Bob,-1,70000,it,2022-06-30,3,2000,,New York,Poor
+  Alice  ,30,,IT,2020/12/01,4,one thousand,john,London,Excellent  
+Bob,40,-5000,HR ,2021-01-15,3,2000,DOE ,new york,Excellent
+Eve,25,50000,Finance,2020/12/01,nan,-300,John,new york,Good
+Bob,thirty,50000,,15/03/2020,five,2000,john,Paris,good
+Eve,thirty,50000,,2020/12/01,2,1000,,,Poor
+,40,50000,HR ,,five,1000,john,Paris,good
+  Alice  ,30,70000,IT,,nan,one thousand,Doe,London,good
+  Alice  ,thirty,,it,2020/12/01,five,,DOE ,new york,Good
+Alice,nan,sixty thousand,,,five,-300,DOE ,Paris,Excellent
+David,25,60000,IT,15/03/2020,1,-300,DOE ,,
+Eve,25,70000,HR ,2022-06-30,five,,DOE ,London,average
+Alice,thirty,70000,HR,,five,1000,DOE ,New York,good
+Bob,35,sixty thousand,it,,3,1000,DOE ,Paris,average
+Bob,thirty,sixty thousand,Finance,2020/12/01,2,2000,John,London,Excellent
+Alice,35,60000,,15/03/2020,3,one thousand,,New York,average
+  Alice  ,thirty,60000,IT,2022-06-30,3,one thousand,DOE ,Paris,good
+Bob,nan,sixty thousand,HR,2020/12/01,4,one thousand,,London,Good
+,-1,50000,Finance,2020/12/01,1,2000,DOE ,London,average
+,25,70000,IT,15/03/2020,3,one thousand,john,Paris,Excellent
+Alice,thirty,-5000,IT,2022-06-30,nan,,DOE ,London,Excellent
+Eve,nan,60000,Finance,15/03/2020,nan,2000,Doe,new york,Excellent  
+Eve,35,60000,HR,2022-06-30,five,,John,Paris,Excellent  
+Alice,35,sixty thousand,HR ,15/03/2020,4,2000,john,London,Good
+Eve,25,,HR,2020/12/01,1,one thousand,john,New York,average
+  Alice  ,40,-5000,it,2020/12/01,1,,Doe,New York,average
+  Alice  ,thirty,-5000,,2021-01-15,five,,DOE ,new york,Excellent  
+Eve,30,60000,Finance,,nan,,John,Paris,
+,35,50000,HR ,15/03/2020,2,2000,john,London,Poor
+Eve,-1,,Finance,2021-01-15,4,-300,John,London,Excellent
+  Alice  ,-1,-5000,Finance,,five,one thousand,john,New York,
+Charlie,35,60000,HR,15/03/2020,4,,DOE ,new york,Excellent
+David,40,-5000,,2022-06-30,nan,-300,john,New York,
+Bob,40,,it,,nan,one thousand,john,New York,Excellent  
+Charlie,nan,,IT,2020/12/01,2,one thousand,,new york,Excellent  
+Eve,-1,70000,IT,2021-01-15,2,,DOE ,Paris,Poor
+,nan,sixty thousand,Finance,,1,,Doe,London,
+Alice,-1,sixty thousand,,,4,2000,Doe,Paris,Excellent
+Eve,thirty,60000,HR ,2020/12/01,4,-300,DOE ,,average
+,thirty,,HR,15/03/2020,nan,-300,Doe,,Excellent
+David,30,70000,,2022-06-30,1,,DOE ,,good
+Eve,thirty,70000,,2020/12/01,five,one thousand,Doe,new york,Excellent  
+  Alice  ,30,-5000,HR,2022-06-30,4,,,New York,Good
+Alice,thirty,-5000,Finance,15/03/2020,1,one thousand,Doe,Paris,Good
+,25,70000,,,1,one thousand,john,London,Excellent  
+,thirty,-5000,IT,2022-06-30,nan,,DOE ,,good
+,nan,,HR,2021-01-15,1,1000,John,Paris,Good
+David,35,50000,HR ,2021-01-15,2,-300,John,,Excellent  
+Eve,nan,,it,2020/12/01,2,one thousand,DOE ,,Good
+David,35,70000,Finance,15/03/2020,3,one thousand,,London,Excellent  
+Bob,40,70000,HR,2020/12/01,nan,1000,Doe,new york,Poor
+Bob,nan,,it,2020/12/01,five,2000,,New York,average
+Eve,40,-5000,it,2020/12/01,3,1000,John,new york,average
+  Alice  ,30,-5000,HR ,2021-01-15,2,1000,DOE ,Paris,Excellent
+David,30,sixty thousand,,2021-01-15,3,one thousand,DOE ,new york,good
+Alice,25,70000,HR ,2020/12/01,nan,-300,,Paris,Excellent  
+,thirty,60000,,2021-01-15,nan,1000,,Paris,
+,nan,sixty thousand,,15/03/2020,1,2000,Doe,New York,Excellent
+Eve,40,-5000,HR,2020/12/01,4,,john,London,Excellent
+  Alice  ,35,,HR,2021-01-15,1,1000,john,New York,Excellent  
+Bob,30,-5000,Finance,2022-06-30,nan,1000,Doe,new york,Excellent  
+Bob,thirty,,,2020/12/01,2,2000,john,Paris,Excellent
+,30,sixty thousand,it,2020/12/01,five,-300,John,,Excellent
+Eve,35,70000,IT,15/03/2020,2,1000,john,,average
+David,thirty,-5000,Finance,,1,1000,Doe,Paris,
+Bob,thirty,,HR,,five,-300,john,New York,Excellent
+David,40,70000,HR ,15/03/2020,nan,2000,DOE ,London,average
+  Alice  ,40,60000,Finance,15/03/2020,2,1000,,New York,Excellent
+Bob,nan,,Finance,15/03/2020,nan,-300,John,Paris,Good
+Bob,nan,sixty thousand,Finance,,five,1000,DOE ,Paris,Excellent
+Charlie,-1,60000,Finance,15/03/2020,five,,DOE ,London,Excellent  
+Bob,-1,60000,IT,2021-01-15,2,one thousand,Doe,new york,good
+Alice,25,50000,HR ,2020/12/01,nan,,,new york,good
+Eve,30,-5000,HR ,2020/12/01,3,1000,,London,Excellent
+Eve,nan,,HR ,2022-06-30,nan,2000,John,new york,Poor
+David,40,60000,,2022-06-30,five,one thousand,Doe,,Good
+  Alice  ,35,50000,it,2020/12/01,nan,,John,new york,
+Bob,40,sixty thousand,HR ,2021-01-15,1,-300,john,new york,Excellent
+Alice,30,70000,Finance,,3,2000,DOE ,new york,
+David,-1,,Finance,,4,,John,,Good
+Charlie,40,60000,HR ,2021-01-15,1,-300,DOE ,new york,Excellent
+David,25,-5000,HR ,,4,1000,Doe,,Poor
+David,30,50000,Finance,15/03/2020,2,-300,john,London,average
+Bob,-1,60000,,2020/12/01,4,,Doe,New York,Poor
+Charlie,35,-5000,HR,2020/12/01,nan,,john,London,Excellent  
+David,-1,60000,HR,2021-01-15,4,1000,john,New York,Poor
+Alice,thirty,,HR ,,five,-300,DOE ,London,average
+Alice,25,,IT,2022-06-30,1,-300,Doe,New York,Excellent  
+Eve,30,,HR ,2022-06-30,1,1000,Doe,New York,average
+Charlie,35,sixty thousand,HR ,,4,-300,John,Paris,good
+Charlie,25,sixty thousand,HR,2022-06-30,1,1000,Doe,New York,average
+Eve,-1,50000,Finance,2021-01-15,five,2000,John,New York,Excellent
+David,25,,HR ,2021-01-15,1,,,Paris,
+Charlie,30,-5000,Finance,,4,2000,,new york,good
+Alice,nan,60000,Finance,2022-06-30,3,one thousand,,new york,good
+Alice,25,70000,IT,2021-01-15,3,one thousand,Doe,Paris,
+Bob,thirty,-5000,Finance,2021-01-15,2,one thousand,Doe,,good
+Charlie,25,sixty thousand,HR,15/03/2020,1,1000,John,New York,average
+David,-1,sixty thousand,,15/03/2020,4,-300,john,New York,Poor
+Eve,-1,-5000,,2021-01-15,1,2000,John,Paris,Good
+Eve,35,sixty thousand,it,,nan,2000,,Paris,average
+David,-1,,HR ,2020/12/01,five,2000,John,,Excellent  
+  Alice  ,40,50000,HR,2020/12/01,1,2000,john,new york,Excellent  
+,30,60000,Finance,2021-01-15,1,one thousand,Doe,London,Poor
+Bob,30,50000,,2021-01-15,3,2000,John,new york,Poor
+Eve,nan,60000,HR,2021-01-15,five,-300,,New York,good
+Charlie,nan,60000,,,4,one thousand,,Paris,Excellent
+Bob,30,50000,Finance,15/03/2020,1,2000,Doe,,Excellent
+Charlie,thirty,-5000,,2021-01-15,3,1000,John,new york,good
+  Alice  ,nan,60000,HR ,2021-01-15,2,,john,,good
+Alice,35,50000,HR ,2022-06-30,five,,Doe,new york,
+Bob,-1,60000,it,,3,,John,New York,
+Eve,30,70000,it,2021-01-15,3,one thousand,DOE ,London,Good
+Bob,nan,-5000,,2022-06-30,3,2000,,,Good
+Bob,30,,HR,2020/12/01,1,one thousand,john,,Good
+Bob,40,60000,HR ,2021-01-15,1,-300,john,London,Good
+,25,70000,HR,2021-01-15,2,1000,john,,Poor
+Bob,-1,,HR,2022-06-30,nan,1000,,,Poor
+Charlie,30,,,,nan,,John,new york,
+Alice,25,60000,HR,2021-01-15,nan,,Doe,new york,Excellent
+  Alice  ,nan,50000,HR ,2020/12/01,five,,John,London,good
+David,25,60000,Finance,2021-01-15,five,2000,Doe,New York,Excellent  
+Bob,-1,70000,it,2020/12/01,2,-300,john,,Excellent
+Eve,30,,Finance,15/03/2020,five,-300,John,New York,average
+Bob,40,60000,HR,15/03/2020,nan,-300,john,London,Poor
+Eve,thirty,50000,Finance,2020/12/01,nan,-300,DOE ,London,Good
+Charlie,nan,60000,HR ,,3,,john,new york,Good
+Eve,30,-5000,HR ,2021-01-15,five,1000,john,,average
+David,-1,50000,HR,2021-01-15,1,,Doe,Paris,Excellent
+Alice,nan,70000,,15/03/2020,1,-300,DOE ,London,Good
+Eve,35,,Finance,2020/12/01,3,,john,,Excellent
+Eve,25,60000,,2021-01-15,3,-300,john,New York,good
+Alice,thirty,50000,,2021-01-15,3,one thousand,DOE ,new york,average
+David,-1,-5000,IT,,1,1000,DOE ,New York,Excellent  
+Bob,35,50000,HR,2022-06-30,nan,one thousand,John,London,Excellent
+Eve,30,sixty thousand,it,15/03/2020,3,2000,Doe,London,good
+Alice,40,-5000,HR ,15/03/2020,2,,DOE ,New York,Excellent
+Charlie,nan,70000,HR ,2022-06-30,3,2000,DOE ,London,Excellent
+Alice,25,,HR,2021-01-15,4,,,,Good
+Charlie,nan,70000,it,,3,one thousand,DOE ,London,
+David,thirty,60000,HR ,,1,-300,Doe,new york,Poor
+Bob,30,50000,HR,15/03/2020,five,-300,john,,Excellent
+Alice,nan,sixty thousand,HR ,,3,,john,Paris,Excellent
+  Alice  ,25,-5000,,2022-06-30,five,-300,john,London,Excellent
+  Alice  ,30,-5000,Finance,2021-01-15,4,one thousand,john,London,
+,nan,50000,Finance,2022-06-30,2,-300,,new york,good
+Eve,40,sixty thousand,HR ,2020/12/01,five,one thousand,DOE ,new york,Excellent  
+David,-1,50000,IT,15/03/2020,nan,2000,john,New York,Excellent  
+Alice,30,60000,it,,3,one thousand,John,New York,average
+  Alice  ,-1,70000,it,2020/12/01,4,1000,john,New York,Good
+Eve,30,-5000,it,,4,1000,DOE ,new york,
+  Alice  ,40,60000,,2021-01-15,five,1000,john,New York,good
+Alice,-1,70000,it,2021-01-15,2,,,New York,Excellent
+Charlie,35,60000,Finance,2021-01-15,1,,Doe,Paris,good
+Alice,25,sixty thousand,,,3,,Doe,New York,
+,35,-5000,HR,2020/12/01,4,one thousand,DOE ,London,
+Alice,nan,50000,it,2021-01-15,2,,Doe,new york,
+Alice,40,50000,it,2020/12/01,nan,2000,Doe,,average
+,35,70000,HR,,4,1000,John,Paris,Poor
+David,30,,it,2020/12/01,2,one thousand,DOE ,new york,Good
+Alice,nan,sixty thousand,HR,,1,1000,DOE ,new york,average
+,nan,70000,,,1,,Doe,London,average
+Eve,35,,Finance,15/03/2020,4,one thousand,Doe,New York,Poor
+Charlie,35,60000,HR,,4,-300,Doe,London,average
+Charlie,40,sixty thousand,IT,,five,2000,,New York,
+Alice,25,60000,HR,2022-06-30,3,,john,New York,
+David,35,-5000,it,2021-01-15,2,,,new york,good
+David,thirty,sixty thousand,,15/03/2020,4,2000,DOE ,New York,Excellent
+Eve,35,,HR ,15/03/2020,3,2000,John,Paris,average
+Alice,-1,-5000,,15/03/2020,five,-300,john,Paris,Excellent
+Charlie,30,50000,HR ,2022-06-30,3,,John,Paris,Good
+David,thirty,,HR,,4,,DOE ,new york,Excellent  
+Alice,thirty,70000,Finance,2021-01-15,1,1000,DOE ,London,
+  Alice  ,-1,50000,IT,2020/12/01,2,one thousand,John,,good
+David,-1,50000,,,2,one thousand,John,New York,Good
+,nan,70000,it,2022-06-30,1,1000,John,,good
+  Alice  ,25,sixty thousand,HR ,,4,one thousand,DOE ,London,Excellent  
+David,30,50000,it,,2,2000,Doe,London,Excellent  
+Charlie,40,,Finance,2022-06-30,4,one thousand,John,new york,Poor
+Bob,thirty,-5000,HR ,15/03/2020,five,one thousand,john,Paris,
+  Alice  ,40,50000,,15/03/2020,4,1000,DOE ,Paris,Good
+Eve,35,,HR,2021-01-15,3,-300,,London,Poor
+Eve,35,60000,it,2021-01-15,1,one thousand,,new york,Excellent  
+Charlie,40,,Finance,15/03/2020,4,one thousand,john,new york,Good
+David,35,-5000,,2020/12/01,five,-300,Doe,New York,good
+Alice,25,,,,nan,1000,John,Paris,Poor
+David,-1,70000,,2020/12/01,1,-300,DOE ,London,Poor
+Charlie,35,-5000,,,2,1000,John,,
+Eve,nan,sixty thousand,HR ,15/03/2020,3,2000,DOE ,Paris,Excellent
+David,35,60000,,2021-01-15,2,1000,,New York,good
+Eve,30,70000,it,2021-01-15,five,2000,John,new york,good
+  Alice  ,25,sixty thousand,Finance,2020/12/01,five,2000,john,London,Poor
+Alice,30,,HR ,2021-01-15,2,1000,Doe,Paris,Poor
+  Alice  ,30,-5000,,15/03/2020,1,,john,,
+Eve,nan,60000,IT,2020/12/01,2,1000,Doe,New York,Excellent
+Eve,25,70000,IT,,4,one thousand,John,New York,good
+Bob,25,sixty thousand,Finance,2021-01-15,2,one thousand,John,Paris,Excellent  
+Bob,25,sixty thousand,HR,2022-06-30,3,,Doe,,average
+  Alice  ,25,60000,HR,2021-01-15,3,2000,,New York,average
+,25,,HR ,,nan,,DOE ,London,Excellent
+  Alice  ,nan,60000,HR ,2020/12/01,3,one thousand,john,New York,Good
+Bob,35,sixty thousand,HR ,,2,,john,,
+Eve,30,50000,HR,2022-06-30,3,1000,john,new york,Excellent
+Charlie,25,70000,IT,15/03/2020,1,,John,new york,average
+  Alice  ,thirty,60000,HR,2021-01-15,3,2000,john,Paris,Poor
+Eve,35,sixty thousand,it,2020/12/01,4,1000,DOE ,,average
+Charlie,35,,,15/03/2020,1,-300,DOE ,New York,Poor
+Charlie,30,sixty thousand,HR ,,nan,one thousand,Doe,New York,
+Bob,nan,,IT,2020/12/01,4,one thousand,John,new york,Poor
+  Alice  ,40,60000,Finance,15/03/2020,2,,DOE ,new york,Excellent
+David,40,,Finance,2020/12/01,2,1000,,London,Poor
+Alice,35,-5000,,2022-06-30,2,-300,John,new york,Good
+Bob,-1,-5000,IT,2022-06-30,4,1000,John,London,Excellent
+Bob,-1,-5000,HR,2021-01-15,4,one thousand,DOE ,New York,
+David,30,50000,HR,2021-01-15,4,1000,,London,Excellent
+Alice,40,60000,it,2022-06-30,1,-300,Doe,London,Good
+Eve,35,sixty thousand,it,2020/12/01,five,,DOE ,Paris,
+,nan,sixty thousand,HR,2022-06-30,1,2000,,new york,average
+  Alice  ,40,50000,Finance,2021-01-15,2,1000,John,London,Good
+,35,,HR ,2022-06-30,five,2000,,New York,
+Eve,35,50000,Finance,2022-06-30,3,one thousand,John,,Excellent  
+Bob,25,,it,2020/12/01,2,,DOE ,London,Poor
+Alice,nan,,,15/03/2020,nan,,DOE ,new york,Excellent
+Bob,25,70000,HR,2021-01-15,1,1000,john,Paris,
+Charlie,30,sixty thousand,it,2020/12/01,4,,john,New York,Excellent
+Bob,25,-5000,it,2022-06-30,1,1000,john,Paris,Poor
+Bob,thirty,,HR ,2022-06-30,4,1000,DOE ,,
+Eve,25,70000,HR,15/03/2020,five,2000,Doe,London,average
+Eve,thirty,sixty thousand,HR ,2021-01-15,nan,,DOE ,London,Excellent  
+Eve,40,-5000,HR,2021-01-15,five,1000,,new york,Excellent  
+,-1,,HR ,,nan,2000,DOE ,London,Good
+Charlie,35,,Finance,2021-01-15,1,-300,DOE ,New York,
+Eve,thirty,50000,,15/03/2020,4,2000,John,,Poor
+Alice,nan,50000,,,five,2000,John,Paris,
+,25,sixty thousand,HR,,nan,1000,John,,Excellent
+David,thirty,-5000,IT,2022-06-30,2,one thousand,DOE ,London,good
+Alice,nan,,it,2022-06-30,2,one thousand,Doe,Paris,
+  Alice  ,-1,sixty thousand,it,2021-01-15,five,one thousand,,new york,Excellent  
+  Alice  ,-1,sixty thousand,HR,,4,2000,,,Excellent  
+Alice,25,60000,HR ,2022-06-30,five,1000,Doe,Paris,Excellent  
+Eve,30,50000,IT,15/03/2020,1,,Doe,Paris,average
+David,25,-5000,Finance,2022-06-30,nan,2000,,Paris,
+David,40,,HR ,2022-06-30,1,2000,john,New York,Good
+,thirty,sixty thousand,HR ,,2,1000,John,,
+David,35,,HR,,nan,-300,John,Paris,good
+  Alice  ,30,60000,HR,2020/12/01,five,2000,,,Excellent  
+Charlie,25,-5000,it,15/03/2020,1,-300,Doe,Paris,Excellent
+Eve,nan,sixty thousand,HR,,3,-300,john,new york,Excellent  
+David,30,,HR,2021-01-15,4,one thousand,,new york,
+,thirty,50000,HR,15/03/2020,4,1000,John,new york,average
+  Alice  ,30,60000,it,15/03/2020,3,-300,DOE ,London,Poor
+Charlie,thirty,-5000,Finance,,2,1000,Doe,Paris,
+Bob,25,60000,Finance,15/03/2020,nan,one thousand,DOE ,London,
+Bob,thirty,50000,HR,,4,1000,,,Good
+Charlie,30,-5000,it,2022-06-30,3,2000,John,London,average
+  Alice  ,nan,60000,Finance,2020/12/01,five,-300,john,,good
+,-1,70000,HR ,2022-06-30,3,1000,DOE ,,Poor
+Charlie,30,50000,Finance,,2,,john,,Excellent  
+Eve,thirty,50000,Finance,,2,1000,John,London,Excellent
+Eve,-1,50000,it,2022-06-30,1,-300,DOE ,Paris,
+Bob,thirty,70000,HR ,2021-01-15,4,one thousand,john,London,good
+David,nan,70000,it,2021-01-15,1,one thousand,john,Paris,Poor
+,thirty,,HR,2021-01-15,3,-300,DOE ,Paris,Excellent
+Bob,25,sixty thousand,,,nan,2000,John,,good
+David,35,60000,Finance,15/03/2020,nan,2000,john,London,average
+David,30,,,,2,one thousand,,Paris,average
+Eve,35,60000,it,15/03/2020,nan,one thousand,DOE ,new york,Poor
+  Alice  ,thirty,sixty thousand,it,2022-06-30,nan,-300,Doe,Paris,Excellent  
+Alice,nan,70000,it,2020/12/01,nan,2000,Doe,new york,Excellent
+  Alice  ,30,sixty thousand,,15/03/2020,3,one thousand,John,London,average
+Alice,thirty,70000,it,2021-01-15,nan,2000,,London,Poor
+Charlie,-1,sixty thousand,HR,,five,one thousand,john,London,average
+Eve,40,,it,2022-06-30,nan,1000,Doe,Paris,average
+David,thirty,-5000,IT,2021-01-15,nan,,John,New York,good
+,35,,,2022-06-30,1,1000,,Paris,good
+Alice,30,60000,IT,2020/12/01,3,one thousand,,Paris,average
+  Alice  ,35,,it,,2,,John,,Good
+David,30,50000,HR,,1,,John,,good
+Alice,thirty,60000,Finance,2020/12/01,4,one thousand,john,Paris,Excellent
+Alice,25,sixty thousand,HR ,,3,one thousand,John,new york,Poor
+Alice,-1,60000,HR ,15/03/2020,five,2000,john,,Poor
+,thirty,-5000,it,2022-06-30,3,one thousand,john,Paris,Excellent  
+Eve,35,70000,HR,2021-01-15,4,-300,DOE ,New York,Excellent
+,40,sixty thousand,,2020/12/01,4,one thousand,,new york,Excellent
+Bob,40,60000,IT,15/03/2020,4,-300,,London,Excellent
+David,nan,sixty thousand,IT,2021-01-15,2,one thousand,,Paris,Excellent  
+Eve,30,sixty thousand,IT,2021-01-15,nan,2000,DOE ,Paris,Excellent
+Eve,35,sixty thousand,,2020/12/01,3,-300,john,new york,
+Eve,nan,70000,HR ,15/03/2020,nan,1000,john,,Excellent  
+  Alice  ,35,,HR,2021-01-15,nan,-300,John,,Poor
+Eve,30,sixty thousand,,2021-01-15,five,2000,DOE ,,
+,thirty,50000,IT,15/03/2020,4,-300,John,London,Excellent  
+Eve,thirty,-5000,it,,2,one thousand,DOE ,new york,average
+Charlie,40,70000,Finance,2021-01-15,five,one thousand,John,new york,average
+David,thirty,60000,,2022-06-30,1,2000,Doe,,Poor
+Eve,thirty,70000,,15/03/2020,2,,,,average
+David,25,60000,HR,2021-01-15,nan,one thousand,,New York,Excellent
+Charlie,40,70000,HR,2020/12/01,2,1000,john,New York,Excellent  
+Charlie,nan,60000,,2022-06-30,4,2000,Doe,Paris,
+David,-1,sixty thousand,IT,2021-01-15,1,-300,,Paris,Excellent
+Alice,25,,Finance,2022-06-30,4,-300,john,new york,average
+Bob,nan,60000,HR,2022-06-30,1,1000,Doe,new york,good
+  Alice  ,30,60000,IT,,five,one thousand,,London,
+Alice,25,50000,it,2022-06-30,nan,2000,John,London,Excellent
+Alice,nan,60000,HR,,1,1000,DOE ,New York,Excellent  
+,30,50000,IT,15/03/2020,1,one thousand,Doe,Paris,Poor
+  Alice  ,40,-5000,IT,,1,2000,john,New York,Excellent
+  Alice  ,-1,sixty thousand,Finance,2020/12/01,2,-300,Doe,New York,good
+Alice,30,50000,Finance,2021-01-15,five,2000,john,Paris,average
+Eve,thirty,,it,15/03/2020,2,,Doe,London,
+,35,sixty thousand,IT,15/03/2020,nan,2000,john,Paris,Poor
+,30,50000,HR ,2020/12/01,1,,,,
+Charlie,30,sixty thousand,IT,,five,2000,John,,Poor
+  Alice  ,-1,sixty thousand,Finance,2021-01-15,five,,,,Excellent  
+Alice,35,sixty thousand,HR ,,3,-300,John,new york,
+Charlie,thirty,-5000,HR,2022-06-30,nan,one thousand,,London,average
+David,nan,,HR,,five,,,London,Excellent  
+Bob,nan,70000,,15/03/2020,1,,Doe,new york,Excellent  
+,30,70000,Finance,2021-01-15,1,-300,DOE ,New York,Poor
+David,35,50000,,,five,,john,,Good
+David,35,sixty thousand,HR ,2021-01-15,2,1000,john,,
+Eve,thirty,50000,Finance,2021-01-15,nan,-300,john,New York,
+Bob,-1,-5000,it,2022-06-30,1,1000,John,Paris,Excellent
+David,40,-5000,IT,2022-06-30,five,-300,john,Paris,Poor
+David,nan,60000,it,15/03/2020,1,,john,London,good
+Bob,-1,-5000,HR ,2020/12/01,five,1000,Doe,new york,Good
+Bob,25,60000,Finance,2021-01-15,nan,,,London,average
+David,nan,,HR ,2020/12/01,five,-300,john,Paris,Excellent
+Bob,-1,50000,IT,15/03/2020,3,,DOE ,New York,Good
+David,nan,,HR,2021-01-15,five,1000,john,London,Poor
+David,40,-5000,HR,2021-01-15,five,1000,John,,Good
+Eve,25,,HR ,2020/12/01,nan,,John,,Excellent  
+Alice,40,,,,five,2000,John,New York,
+David,thirty,,Finance,2022-06-30,nan,-300,john,Paris,Excellent  
+Charlie,25,-5000,Finance,,3,-300,Doe,,
+,30,sixty thousand,HR,2020/12/01,nan,,DOE ,,Excellent
+  Alice  ,-1,,it,2022-06-30,1,2000,john,new york,Poor
+Alice,25,60000,IT,,nan,1000,Doe,London,Poor
+Alice,thirty,-5000,it,2022-06-30,3,one thousand,Doe,Paris,Good
+Alice,thirty,,it,2021-01-15,4,one thousand,john,London,Excellent
+Eve,40,sixty thousand,HR ,,five,,john,Paris,Poor
+David,nan,-5000,HR,2022-06-30,nan,2000,Doe,,good
+Eve,25,70000,HR,2022-06-30,five,2000,Doe,new york,good
+David,-1,sixty thousand,HR,2022-06-30,2,-300,Doe,London,Excellent  
+Eve,25,60000,HR ,,1,1000,john,,
+Eve,35,,,15/03/2020,1,2000,Doe,Paris,Good
+,nan,70000,it,,2,one thousand,John,London,average
+Charlie,-1,70000,HR ,2020/12/01,2,1000,john,London,
+Eve,-1,-5000,Finance,,nan,1000,John,,Excellent
+,30,70000,IT,2022-06-30,2,,,London,Poor
+Bob,40,60000,,2021-01-15,4,2000,john,new york,
+Charlie,30,60000,Finance,,five,,,new york,average
+Eve,-1,50000,it,,five,2000,Doe,,average
+  Alice  ,nan,60000,HR,2022-06-30,3,-300,Doe,Paris,good
+Alice,25,sixty thousand,it,2021-01-15,2,,DOE ,,Excellent
+Bob,25,70000,HR ,2021-01-15,2,,Doe,new york,
+Bob,nan,60000,IT,2020/12/01,4,one thousand,,New York,Good
+,-1,-5000,HR ,,1,,Doe,New York,
+Bob,thirty,50000,,2021-01-15,1,2000,john,London,good
+Charlie,25,70000,,2021-01-15,five,one thousand,Doe,London,Excellent  
+Eve,thirty,50000,IT,15/03/2020,five,,DOE ,New York,average
+Eve,25,70000,Finance,15/03/2020,nan,,Doe,new york,Excellent
+  Alice  ,25,-5000,Finance,2021-01-15,4,-300,,London,Excellent
+Alice,40,50000,,2020/12/01,3,,,,Good
+,40,,,2021-01-15,3,1000,Doe,,Excellent
+Alice,35,sixty thousand,HR,2022-06-30,4,one thousand,,new york,good
+Bob,30,sixty thousand,Finance,,3,1000,,London,good
+  Alice  ,nan,70000,IT,2020/12/01,1,one thousand,DOE ,,good
+Alice,nan,,Finance,2022-06-30,3,-300,john,London,Excellent
+Charlie,nan,50000,HR,2020/12/01,3,,DOE ,London,Excellent
+Eve,35,,HR ,2022-06-30,4,,John,,good
+Bob,40,,,,4,,DOE ,New York,Excellent
+  Alice  ,-1,50000,,,3,one thousand,Doe,,Excellent
+Alice,thirty,-5000,HR,15/03/2020,2,,john,new york,average
+,thirty,,IT,2022-06-30,4,1000,Doe,Paris,
+Charlie,-1,,,15/03/2020,nan,,John,,Poor
+Charlie,35,-5000,it,2022-06-30,nan,-300,john,London,Excellent
+Alice,-1,,,15/03/2020,1,1000,,London,Poor
+Eve,nan,,it,,3,,DOE ,,Excellent  
+Alice,30,,HR,2020/12/01,2,,Doe,Paris,Poor
+Bob,25,sixty thousand,HR,15/03/2020,1,2000,John,,average
+Alice,thirty,60000,,2022-06-30,3,one thousand,,Paris,Excellent
+Charlie,40,-5000,Finance,2022-06-30,4,1000,DOE ,Paris,good
+  Alice  ,40,,it,,nan,2000,,new york,Poor
+Alice,35,sixty thousand,IT,2022-06-30,five,-300,DOE ,London,Excellent
+Eve,40,-5000,,2021-01-15,2,one thousand,john,London,Good
+  Alice  ,nan,70000,IT,2020/12/01,five,1000,,Paris,Excellent  
+,thirty,70000,,15/03/2020,nan,,,London,good
+David,-1,,Finance,2020/12/01,five,1000,,New York,Good
+Alice,nan,sixty thousand,Finance,,4,,john,Paris,Good
+Eve,35,sixty thousand,Finance,15/03/2020,3,one thousand,John,London,Poor
+  Alice  ,nan,-5000,HR ,15/03/2020,4,,DOE ,New York,Good
+Eve,-1,-5000,Finance,2021-01-15,five,-300,,new york,average
+,30,sixty thousand,HR,,4,,john,London,average
+Charlie,35,-5000,HR,2022-06-30,nan,-300,John,New York,Poor
+Eve,30,sixty thousand,HR ,2021-01-15,2,one thousand,DOE ,,Excellent
+  Alice  ,25,60000,it,2021-01-15,4,one thousand,john,,
+Eve,30,sixty thousand,IT,2020/12/01,nan,1000,DOE ,New York,Excellent
+Eve,25,70000,,2020/12/01,2,-300,,Paris,Excellent
+Eve,25,-5000,,2020/12/01,3,-300,John,Paris,Excellent
+Bob,30,sixty thousand,HR ,2021-01-15,five,2000,john,London,Excellent
+Bob,35,sixty thousand,HR,2022-06-30,3,2000,John,,good
+Charlie,-1,-5000,,15/03/2020,1,2000,,Paris,
+Alice,nan,60000,HR,2020/12/01,nan,,John,Paris,good
+Eve,nan,60000,it,2022-06-30,2,2000,John,,Good
+,-1,-5000,IT,,4,-300,Doe,new york,Excellent  
+Alice,thirty,50000,it,2020/12/01,3,,John,Paris,Excellent
+,thirty,-5000,HR ,15/03/2020,2,one thousand,DOE ,New York,Excellent  
+Alice,25,-5000,Finance,,nan,1000,john,London,average
+Charlie,25,60000,Finance,,1,2000,Doe,Paris,Poor
+Eve,35,60000,Finance,15/03/2020,3,one thousand,john,Paris,Poor
+Eve,40,-5000,it,2020/12/01,five,-300,john,new york,good
+David,30,-5000,,2021-01-15,2,1000,,New York,good
+,25,-5000,IT,15/03/2020,five,one thousand,,London,average
+Alice,nan,60000,Finance,15/03/2020,2,1000,Doe,Paris,Excellent
+Alice,35,-5000,HR ,15/03/2020,2,2000,,London,Excellent  
+Bob,30,-5000,HR ,,nan,-300,,,Excellent  
+David,35,,Finance,2022-06-30,nan,1000,,Paris,
+  Alice  ,30,50000,Finance,2021-01-15,nan,one thousand,john,Paris,Good
+  Alice  ,30,70000,IT,2020/12/01,4,2000,Doe,,Poor
+Bob,-1,50000,Finance,2020/12/01,2,2000,john,new york,Good
+Bob,25,,IT,2022-06-30,3,one thousand,DOE ,Paris,
+Bob,35,70000,HR ,15/03/2020,five,one thousand,john,London,good
+,35,-5000,Finance,2021-01-15,nan,1000,DOE ,New York,Excellent  
+,-1,,it,2020/12/01,nan,,John,London,Poor
+Charlie,nan,-5000,it,2020/12/01,five,2000,John,new york,Good
+Charlie,nan,60000,HR ,15/03/2020,five,1000,DOE ,New York,good
+Bob,thirty,sixty thousand,IT,2022-06-30,2,one thousand,DOE ,London,
+David,25,,it,2021-01-15,nan,1000,john,London,Good
+Alice,25,60000,IT,2022-06-30,five,one thousand,DOE ,,Excellent  
+,40,,it,2022-06-30,4,-300,Doe,new york,Excellent
+David,-1,,it,2021-01-15,4,one thousand,John,,good
+Eve,nan,60000,IT,2021-01-15,nan,one thousand,John,New York,
+,30,70000,,2020/12/01,five,one thousand,DOE ,,Good
+,35,50000,it,2020/12/01,2,,,new york,Excellent  
+Charlie,25,-5000,Finance,2021-01-15,2,one thousand,,Paris,Excellent
+Alice,35,,HR ,,2,2000,DOE ,Paris,Excellent
+Alice,35,-5000,,2020/12/01,1,2000,Doe,New York,
+  Alice  ,40,sixty thousand,IT,,nan,1000,,Paris,average
+  Alice  ,nan,60000,,2021-01-15,2,,DOE ,,Excellent  
+  Alice  ,25,-5000,HR,2020/12/01,4,1000,Doe,New York,Excellent  
+  Alice  ,35,60000,HR,2022-06-30,five,2000,Doe,new york,Poor
+Eve,25,-5000,it,2021-01-15,3,2000,john,New York,
+Eve,30,50000,it,15/03/2020,3,-300,Doe,New York,Excellent
+,40,50000,Finance,,2,one thousand,,London,Excellent
+Bob,30,50000,HR ,2021-01-15,3,2000,,London,
+Charlie,25,50000,,2021-01-15,3,1000,DOE ,New York,average
+Charlie,thirty,50000,HR,2020/12/01,1,1000,DOE ,Paris,Poor
+  Alice  ,25,50000,it,2020/12/01,4,one thousand,Doe,London,Good
+,nan,60000,HR ,2020/12/01,4,one thousand,John,new york,
+David,35,,,15/03/2020,1,-300,john,,Poor
+Bob,35,-5000,it,2020/12/01,1,,John,London,Excellent  
+,30,50000,it,2021-01-15,3,1000,Doe,New York,Poor
+Bob,40,60000,HR,2020/12/01,nan,one thousand,Doe,Paris,good
+Bob,thirty,60000,HR,2022-06-30,five,1000,John,,Excellent
+Bob,-1,60000,it,2020/12/01,five,one thousand,john,London,Good
+,35,,IT,15/03/2020,3,2000,John,Paris,
+  Alice  ,nan,-5000,it,2022-06-30,five,1000,DOE ,Paris,Excellent
+Charlie,30,,HR ,2021-01-15,1,2000,,Paris,good
+Charlie,30,70000,it,2021-01-15,4,1000,DOE ,New York,good
+  Alice  ,-1,60000,Finance,,five,,,new york,Excellent
+Bob,nan,70000,Finance,2022-06-30,3,-300,Doe,Paris,average
+David,40,sixty thousand,Finance,,nan,2000,john,,Poor
+Alice,nan,50000,IT,2022-06-30,3,one thousand,John,London,
+,40,50000,IT,2022-06-30,2,,john,,
+Alice,nan,,it,15/03/2020,3,1000,John,New York,
+  Alice  ,nan,-5000,Finance,,1,2000,DOE ,New York,Excellent
+David,25,70000,IT,15/03/2020,4,1000,DOE ,,Excellent  
+,30,-5000,HR,2022-06-30,4,1000,John,new york,average
