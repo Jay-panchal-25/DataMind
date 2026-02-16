@@ -1,5 +1,15 @@
 from core.pipeline_manager import run_pipeline
 
-result = run_pipeline("Backend/Testing dataset/messy_dataset.csv")
+from ml.query_engine import QueryEngine
 
-print(result["data"].head(20))
+result = run_pipeline("Backend/Testing dataset/messy.csv")
+
+engine = QueryEngine(result["data"])
+
+query = input("Enter your query: ")
+
+result = engine.execute(query)
+
+print(result)
+
+

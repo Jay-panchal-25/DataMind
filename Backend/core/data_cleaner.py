@@ -161,8 +161,7 @@ def data_cleaner(df):
     def fix_date_columns(df):
         def parse_date(value):
             if pd.isna(value):
-                return pd.NaT
-
+                    return pd.NaT
             try:
                 # Parse mixed date formats and standardize output shape.
                 dt = parser.parse(str(value), dayfirst=False)
