@@ -14,11 +14,8 @@ def run_pipeline(file_path):
     imputer = DataImputer(strategy="knn")
     df, impute_report = imputer.fit_transform(df)
 
-    # outlier_detector = OutlierDetector(contamination=0.05)
-    # df, outlier_report = outlier_detector.detect(df)
-
+    outlier_detector = OutlierDetector(contamination=0.05)
+    df, outlier_report = outlier_detector.detect(df)
     return {
         "data": df,
-        "imputation": impute_report,
-        # "outliers": outlier_report
     }
