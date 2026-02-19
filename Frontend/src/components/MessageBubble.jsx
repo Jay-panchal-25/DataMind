@@ -1,14 +1,20 @@
-export default function MessageBubble({ role, content }) {
+import ChartRenderer from "./ChartRenderer";
+
+export default function MessageBubble({ role, type, content }) {
   const isUser = role === "user";
 
   return (
     <div className={`flex ${isUser ? "justify-end" : "justify-start"}`}>
       <div
-        className={`max-w-2xl px-4 py-3 rounded-4xl ${
-          isUser ? "bg-neutral-600 text-white" : "bg-gray-800 text-gray-200"
+        className={`rounded-2xl px-4 py-3 max-w-[70%] ${
+          isUser ? "bg-blue-600 text-white" : "bg-neutral-800 text-white"
         }`}
       >
-        {content}
+        {type === "chart" ? (
+          <ChartRenderer chart={content} />
+        ) : (
+          <p>{content}</p>
+        )}
       </div>
     </div>
   );

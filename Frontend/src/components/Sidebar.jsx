@@ -5,22 +5,22 @@ export default function Sidebar({ mode, setMode }) {
   return (
     <div className="w-64 h-screen bg-neutral-950 border-r border-neutral-800 flex flex-col">
       {/* Logo */}
-      <div className="p-4 border-b border-neutral-800">
-        <h1 className="text-white font-semibold text-lg">DataMind AI</h1>
+      <div className="border-b border-neutral-800 flex  align-center justify-center ">
+        <img src="/logo.png" alt="DataMind Logo" className="w-40 h-40" />
       </div>
 
       {/* New Chat */}
-      <div className="p-3">
+      {/* <div className="p-3">
         <button className="w-full flex items-center gap-2 px-3 py-2 bg-neutral-800 hover:bg-neutral-700 text-white rounded-lg">
           <Plus size={16} />
           New Chat
         </button>
-      </div>
+      </div> */}
 
       {/* Modes (LIKE GEMINI) */}
       <div className="px-2 space-y-1">
         {/* Chat */}
-        <div
+        {/* <div
           onClick={() => setMode("chat")}
           className={`
             flex items-center gap-3 px-3 py-2 rounded-lg cursor-pointer
@@ -33,10 +33,10 @@ export default function Sidebar({ mode, setMode }) {
         >
           <MessageSquare size={18} />
           Chat
-        </div>
+        </div> */}
 
         {/* Generate Graph */}
-        <div
+        {/* <div
           onClick={() => setMode("graph")}
           className={`
             flex items-center gap-3 px-3 py-2 rounded-lg cursor-pointer
@@ -49,7 +49,7 @@ export default function Sidebar({ mode, setMode }) {
         >
           <LineChart size={18} />
           Generate Graph
-        </div>
+        </div>*/}
       </div>
 
       {/* Upload at bottom */}

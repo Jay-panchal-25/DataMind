@@ -6,14 +6,12 @@ const API_BASE_URL = "http://127.0.0.1:8000";
 
 export default function ChatWindow() {
   const [messages, setMessages] = useState([
-    { role: "assistant", content: "Hello! How can I help you?" },
+    { role: "assistant", type: "text", content: "Hello! How can I help you?" },
   ]);
-  const [isSending, setIsSending] = useState(false);
 
-  // reference to bottom div for auto scroll
+  const [isSending, setIsSending] = useState(false);
   const bottomRef = useRef(null);
 
-  // auto scroll when new message added
   useEffect(() => {
     bottomRef.current?.scrollIntoView({
       behavior: "smooth",
@@ -21,39 +19,13 @@ export default function ChatWindow() {
     });
   }, [messages]);
 
-  const formatBackendReply = (payload) => {
-    if (!payload || typeof payload !== "object") {
-      return "Invalid response from server.";
-    }
-
-    if (payload.type === "text") {
-      return String(payload.content ?? "");
-    }
-
-    if (payload.type === "chart") {
-      if (typeof payload.content === "string") {
-        return payload.content;
-      }
-
-      const file = payload.content?.file ?? "";
-      const chartType = payload.content?.chart_type ?? "chart";
-      const column = payload.content?.column ?? "column";
-      return `Generated ${chartType} for ${column}: ${file}`;
-    }
-
-    return "I received a response in an unknown format.";
-  };
-
-  // send message function
   const sendMessage = async (text) => {
     if (!text || !text.trim()) return;
 
+    // Add user message
     setMessages((prev) => [
       ...prev,
-      {
-        role: "user",
-        content: text,
-      },
+      { role: "user", type: "text", content: text },
     ]);
 
     setIsSending(true);
@@ -67,20 +39,19 @@ export default function ChatWindow() {
         body: JSON.stringify({ message: text }),
       });
 
-      let responseText = "";
-
       if (!res.ok) {
-        responseText = `Request failed (${res.status})`;
-      } else {
-        const data = await res.json();
-        responseText = formatBackendReply(data);
+        throw new Error("Request failed");
       }
 
+      const data = await res.json();
+
+      // DO NOT convert to text
       setMessages((prev) => [
         ...prev,
         {
           role: "assistant",
-          content: responseText,
+          type: data.type,
+          content: data.content,
         },
       ]);
     } catch {
@@ -88,6 +59,7 @@ export default function ChatWindow() {
         ...prev,
         {
           role: "assistant",
+          type: "text",
           content: "Unable to reach backend. Please ensure the API is running.",
         },
       ]);
@@ -98,18 +70,19 @@ export default function ChatWindow() {
 
   return (
     <div className="flex-1 flex flex-col bg-neutral-900 overflow-hidden">
-      {/* Messages container */}
       <div className="flex-1 overflow-y-auto no-scrollbar px-25 py-6 space-y-6">
         {messages.map((msg, index) => (
-          <MessageBubble key={index} role={msg.role} content={msg.content} />
+          <MessageBubble
+            key={index}
+            role={msg.role}
+            type={msg.type}
+            content={msg.content}
+          />
         ))}
-
-        {/* auto scroll anchor */}
         <div ref={bottomRef} />
       </div>
 
-      {/* Input container */}
-      <div className=" bg-neutral-900 px-20 ">
+      <div className="bg-neutral-900 px-20">
         <ChatInput onSend={sendMessage} disabled={isSending} />
       </div>
     </div>

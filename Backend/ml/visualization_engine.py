@@ -1,16 +1,9 @@
-import matplotlib.pyplot as plt
-import seaborn as sns
-import os
-
+# ml/visualization_engine.py
 
 class VisualizationEngine:
 
     def __init__(self, df):
         self.df = df
-
-        # create graphs folder
-        self.output_dir = "graphs"
-        os.makedirs(self.output_dir, exist_ok=True)
 
 
     def detect_chart_type(self, query):
@@ -19,6 +12,9 @@ class VisualizationEngine:
 
         if "histogram" in query or "distribution" in query:
             return "histogram"
+
+        elif "pie" in query:
+            return "pie"
 
         elif "bar" in query:
             return "bar"
@@ -29,11 +25,9 @@ class VisualizationEngine:
         elif "scatter" in query:
             return "scatter"
 
-        elif "box" in query:
-            return "box"
-
         else:
-            return "histogram"  # default
+            return "bar"
+
 
 
     def detect_column(self, query):
@@ -53,42 +47,97 @@ class VisualizationEngine:
         if column is None:
             return "Column not found"
 
-        plt.figure(figsize=(8, 5))
 
-        if chart_type == "histogram":
-            sns.histplot(self.df[column], kde=True)
+        # BAR CHART (categorical count)
+        if chart_type == "bar":
 
-        elif chart_type == "bar":
-            self.df[column].value_counts().plot(kind="bar")
+            counts = self.df[column].value_counts()
 
+            return {
+                "chart_type": "bar",
+                "labels": counts.index.tolist(),
+                "values": counts.values.tolist(),
+                "column": column
+            }
+
+
+        # HISTOGRAM
+        elif chart_type == "histogram":
+
+            counts, bins = self._histogram_data(self.df[column])
+
+            return {
+                "chart_type": "histogram",
+                "labels": bins,
+                "values": counts,
+                "column": column
+            }
+        
+        # PIE CHART (categorical proportion)
+        elif chart_type == "pie":
+
+            counts = self.df[column].value_counts()
+
+            return {
+                "chart_type": "pie",
+                "labels": counts.index.tolist(),
+                "values": counts.values.tolist(),
+                "column": column
+            }
+
+
+
+        # LINE CHART
         elif chart_type == "line":
-            self.df[column].plot(kind="line")
 
+            return {
+                "chart_type": "line",
+                "labels": list(range(len(self.df[column]))),
+                "values": self.df[column].tolist(),
+                "column": column
+            }
+
+
+        # SCATTER
         elif chart_type == "scatter":
 
             numeric_cols = self.df.select_dtypes(include='number').columns
 
-            if len(numeric_cols) >= 2:
-                sns.scatterplot(
-                    x=self.df[numeric_cols[0]],
-                    y=self.df[numeric_cols[1]]
-                )
-            else:
-                return "Need 2 numeric columns for scatter"
+            if len(numeric_cols) < 2:
+                return "Need at least 2 numeric columns"
 
-        elif chart_type == "box":
-            sns.boxplot(y=self.df[column])
+            x = numeric_cols[0]
+            y = numeric_cols[1]
+
+            return {
+                "chart_type": "scatter",
+                "x": self.df[x].tolist(),
+                "y": self.df[y].tolist(),
+                "x_column": x,
+                "y_column": y
+            }
 
 
-        filename = f"{column}_{chart_type}.png"
-        filepath = os.path.join(self.output_dir, filename)
 
-        plt.title(f"{chart_type} of {column}")
-        plt.savefig(filepath)
-        plt.close()
+    # helper histogram
+    def _histogram_data(self, series, bins=10):
 
-        return {
-            "chart_type": chart_type,
-            "column": column,
-            "file": filepath
-        }
+        counts, bin_edges = self._numpy_hist(series, bins)
+
+        labels = []
+
+        for i in range(len(bin_edges) - 1):
+            labels.append(
+                f"{round(bin_edges[i],2)}-{round(bin_edges[i+1],2)}"
+            )
+
+        return counts, labels
+
+
+    def _numpy_hist(self, series, bins):
+
+        import numpy as np
+
+        counts, bin_edges = np.histogram(series.dropna(), bins=bins)
+
+        return counts.tolist(), bin_edges.tolist()

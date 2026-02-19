@@ -1,5 +1,3 @@
-# services/chat_service.py
-
 from ml.intent_detector import IntentDetector
 from ml.query_engine import QueryEngine
 from ml.visualization_engine import VisualizationEngine

@@ -16,6 +16,7 @@ class IntentDetector:
                 "line chart",
                 "scatter",
                 "show graph"
+                "pie chart"
             ],
 
             "analytics": [
