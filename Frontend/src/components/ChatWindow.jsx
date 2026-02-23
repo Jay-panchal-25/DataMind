@@ -69,7 +69,7 @@ export default function ChatWindow() {
   };
 
   return (
-    <div className="flex-1 flex flex-col bg-neutral-900 overflow-hidden">
+    <div className="flex-1 flex flex-col bg-neutral-900 overflow-hidden h-full">
       <div className="flex-1 overflow-y-auto no-scrollbar px-25 py-6 space-y-6">
         {messages.map((msg, index) => (
           <MessageBubble
