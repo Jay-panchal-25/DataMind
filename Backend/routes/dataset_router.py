@@ -1,5 +1,7 @@
 from fastapi import APIRouter, Query, HTTPException
 from routes.upload_router import DATASTORE
+import numpy as np
+import pandas as pd
 
 router = APIRouter()
 
@@ -21,11 +23,19 @@ def get_dataset(
     start = (page - 1) * page_size
     end = start + page_size
 
-    paginated_df = df.iloc[start:end]
+    paginated_df = df.iloc[start:end].copy()
+
+    # 🔥 CRITICAL FIX — Make Data JSON Safe
+    paginated_df = paginated_df.replace(
+        [np.nan, pd.NA, pd.NaT],
+        "Unknown"
+    )
+
+    records = paginated_df.to_dict(orient="records")
 
     return {
         "page": page,
         "total_pages": total_pages,
         "columns": df.columns.tolist(),
-        "data": paginated_df.to_dict(orient="records")
+        "data": records
     }

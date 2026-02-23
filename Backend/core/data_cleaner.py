@@ -179,5 +179,6 @@ def data_cleaner(df):
         return df
 
     df = fix_date_columns(df)
+    
 
     return df
