@@ -29,6 +29,7 @@ export default function Sidebar() {
       <div className="px-2 space-y-2 mt-4">
         {navItem("/", "Chat", MessageSquare)}
         {navItem("/dataset", "Dataset Viewer", Database)}
+        {navItem("/graph", "AI Graph", Database)}
       </div>
 
       <div className="mt-auto p-3 border-t border-neutral-800">

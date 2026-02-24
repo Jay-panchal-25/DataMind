@@ -4,6 +4,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from routes.chat_router import router as chat_router
 from routes.upload_router import router as upload_router
 from routes.dataset_router import router as dataset_router
+from routes.graph_router import router as graph_router
+
+
 
 app = FastAPI()
 
@@ -17,4 +20,5 @@ app.add_middleware(
 
 app.include_router(upload_router)
 app.include_router(chat_router)
+app.include_router(graph_router)
 app.include_router(dataset_router)
