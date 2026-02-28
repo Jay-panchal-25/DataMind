@@ -66,7 +66,8 @@ DataMind/
 Backend: from `Backend/`, install dependencies with your preferred Python environment tool. Start the API server:
 
 ```bash
-uvicorn main:app --reload --host 0.0.0.0 --port 8000
+.venv\Scripts\activate
+python -m uvicorn main:app --reload
 ```
 
 Frontend: from `Frontend/`, install and run:

@@ -16,6 +16,7 @@ def run_pipeline(file_path):
 
     outlier_detector = OutlierDetector(contamination=0.05)
     df, outlier_report = outlier_detector.detect(df)
+    
     return {
         "data": df,
     }

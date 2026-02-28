@@ -25,9 +25,14 @@ def get_dataset(
 
     paginated_df = df.iloc[start:end].copy()
 
-    # 🔥 CRITICAL FIX — Make Data JSON Safe
-    paginated_df = paginated_df.replace(
-        [np.nan, pd.NA, pd.NaT],
+    # ✅ FIX: Format datetime columns to YYYY-MM-DD (remove T00:00:00)
+    datetime_cols = paginated_df.select_dtypes(include=["datetime64[ns]", "datetime64"]).columns
+    for col in datetime_cols:
+        paginated_df[col] = paginated_df[col].dt.strftime("%Y-%m-%d")
+
+    # 🔥 Keep your original JSON safety logic
+    paginated_df = paginated_df.astype("object").where(
+        pd.notna(paginated_df),
         "Unknown"
     )
 
