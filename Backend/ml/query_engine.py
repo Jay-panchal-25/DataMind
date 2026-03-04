@@ -34,6 +34,7 @@ class QueryEngine:
 
         # Group by trigger words
         self.groupby_keywords = ["group by", "grouped by", "per", "by each", "for each"]
+        self.rank_pattern = re.compile(r"\b(top|highest|bottom|lowest|first|last)\s+(\d+)\b", re.IGNORECASE)
 
         # Operation keywords to exclude from column detection
         self._operation_words = {
@@ -96,6 +97,7 @@ class QueryEngine:
         # so "average" doesn't partially match "age", "sum" doesn't match "summary" etc.
         stop_words = self._operation_words | {
              "per", "each", "for",
+            "top", "bottom", "first", "last", "highest", "lowest",
             "where", "and", "or", "the", "of", "in", "is",
             "what", "show", "me", "find", "get", "give",
         }
@@ -212,6 +214,106 @@ class QueryEngine:
 
         return filters
 
+    def _to_python_scalar(self, value):
+        if pd.isna(value):
+            return None
+        if hasattr(value, "item"):
+            try:
+                return value.item()
+            except Exception:
+                return value
+        return value
+
+    def _to_table_payload(self, frame: pd.DataFrame, title: str):
+        serial = frame.copy()
+        for col in serial.columns:
+            serial[col] = serial[col].map(self._to_python_scalar)
+
+        return {
+            "kind": "table",
+            "title": title,
+            "columns": serial.columns.tolist(),
+            "rows": serial.to_dict(orient="records"),
+            "row_count": len(serial),
+        }
+
+    def detect_rank_request(self, query):
+        match = self.rank_pattern.search(query)
+        if not match:
+            return None
+
+        keyword = match.group(1).lower()
+        n = max(1, int(match.group(2)))
+
+        if keyword in {"top", "highest"}:
+            return ("top", n)
+        if keyword in {"bottom", "lowest"}:
+            return ("bottom", n)
+        if keyword == "first":
+            return ("first", n)
+        if keyword == "last":
+            return ("last", n)
+
+        return None
+
+    def execute_rank_query(self, query, filters, groupby):
+        rank_req = self.detect_rank_request(query)
+        if not rank_req:
+            return None
+
+        rank_kind, n = rank_req
+
+        # Apply filters first
+        data = self.df.copy()
+        for col, op, val in filters:
+            if col not in data.columns:
+                continue
+            if op == "==":
+                data = data[data[col] == val]
+            elif op == "!=":
+                data = data[data[col] != val]
+            elif op == ">":
+                data = data[data[col] > val]
+            elif op == ">=":
+                data = data[data[col] >= val]
+            elif op == "<":
+                data = data[data[col] < val]
+            elif op == "<=":
+                data = data[data[col] <= val]
+
+        if data.empty:
+            return "No rows match the filter."
+
+        if groupby:
+            return "Ranking queries with group by are not supported yet."
+
+        column = self.detect_column(query, operation=None, groupby=groupby, filters=filters)
+
+        if rank_kind in {"top", "bottom"}:
+            if column is None:
+                return "Column not found"
+
+            subset = data[[column]].dropna()
+            if subset.empty:
+                return f"No non-null values found in {column}."
+
+            ascending = rank_kind == "bottom"
+            sorted_rows = subset.sort_values(by=column, ascending=ascending).head(n)
+            title = f"{rank_kind.capitalize()} {len(sorted_rows)} values of {column}"
+            return self._to_table_payload(sorted_rows, title)
+
+        # first/last
+        if column and column in data.columns:
+            subset = data[[column]]
+        else:
+            subset = data
+
+        sliced = subset.head(n) if rank_kind == "first" else subset.tail(n)
+        title = f"{rank_kind.capitalize()} {len(sliced)} rows"
+        if column:
+            title += f" of {column}"
+        return self._to_table_payload(sliced, title)
+
     # ------------------------------------------------------------------ #
     #  New: group-by detection                                            #
     # ------------------------------------------------------------------ #
@@ -277,9 +379,13 @@ class QueryEngine:
 
     def execute(self, query):
 
-        operation = self.detect_operation(query)
         filters   = self.detect_filter(query)
         groupby   = self.detect_groupby(query)
+        rank_result = self.execute_rank_query(query, filters, groupby)
+        if rank_result is not None:
+            return rank_result
+
+        operation = self.detect_operation(query)
         column    = self.detect_column(query, operation=operation, groupby=groupby, filters=filters)
 
         if operation is None:

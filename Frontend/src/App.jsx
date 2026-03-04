@@ -7,10 +7,10 @@ import GraphPage from "./components/GraphPage";
 function App() {
   return (
     <Router>
-      <div className="flex h-screen bg-gray-900 text-white">
+      <div className="flex h-screen bg-neutral-950 text-neutral-100">
         <Sidebar />
 
-        <div className="flex-1 overflow-auto ">
+        <div className="flex-1 overflow-auto">
           <Routes>
             <Route path="/" element={<ChatWindow />} />
             <Route path="/dataset" element={<DatasetPage />} />
@@ -23,3 +23,4 @@ function App() {
 }
 
 export default App;
+

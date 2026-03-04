@@ -94,21 +94,21 @@ export default function GraphPage() {
         : "Graph Preview";
 
   return (
-    <div className="flex h-full bg-neutral-900 text-white">
+    <div className="flex h-full bg-transparent text-neutral-200">
       {/* GRAPH AREA */}
       <div className="flex-1 p-6">
-        <h2 className="text-2xl font-bold mb-6">Graph Builder</h2>
+        <h2 className="text-2xl font-extrabold mb-6 text-neutral-100">Graph Builder</h2>
 
-        {error && <div className="bg-red-600 p-3 rounded mb-4">{error}</div>}
+        {error && <div className="bg-rose-950/30 border border-rose-700 text-rose-300 p-3 rounded-lg mb-4">{error}</div>}
 
-        <div className="bg-neutral-700 rounded-xl p-6 h-[500px]">
+        <div className="bg-neutral-900 border border-neutral-800 shadow-sm rounded-2xl p-6 h-[500px]">
           {loading ? (
-            <div className="flex items-center justify-center h-full">
+            <div className="flex items-center justify-center h-full text-neutral-400">
               Loading...
             </div>
           ) : (
             <>
-              <h3 className="text-lg font-semibold text-center mb-4">
+              <h3 className="text-lg font-semibold text-center text-neutral-200 mb-4">
                 {chartTitle}
               </h3>
 
@@ -179,13 +179,13 @@ export default function GraphPage() {
       </div>
 
       {/* RIGHT SIDEBAR */}
-      <div className="w-80 bg-neutral-800 border-l border-neutral-700 p-6">
-        <h3 className="text-lg font-semibold mb-6">Settings</h3>
+      <div className="w-80 bg-neutral-900 border-l border-neutral-800 p-6">
+        <h3 className="text-lg font-bold text-neutral-100 mb-6">Settings</h3>
 
         <div className="mb-5">
-          <label className="block mb-2">Chart Type</label>
+          <label className="block mb-2 text-sm font-semibold text-neutral-400">Chart Type</label>
           <select
-            className="w-full bg-neutral-700 p-2 rounded"
+            className="w-full bg-neutral-950 border border-neutral-700 p-2.5 rounded-lg text-neutral-200"
             value={chartType}
             onChange={(e) => {
               setChartType(e.target.value);
@@ -202,11 +202,11 @@ export default function GraphPage() {
         </div>
 
         <div className="mb-5">
-          <label className="block mb-2">
+          <label className="block mb-2 text-sm font-semibold text-neutral-400">
             {chartType === "histogram" ? "Column" : "X Axis"}
           </label>
           <select
-            className="w-full bg-neutral-700 p-2 rounded"
+            className="w-full bg-neutral-950 border border-neutral-700 p-2.5 rounded-lg text-neutral-200"
             value={xColumn}
             onChange={(e) => setXColumn(e.target.value)}
           >
@@ -222,9 +222,9 @@ export default function GraphPage() {
         {/* Hide Y for histogram */}
         {chartType !== "histogram" && (
           <div className="mb-5">
-            <label className="block mb-2">Y Axis</label>
+            <label className="block mb-2 text-sm font-semibold text-neutral-400">Y Axis</label>
             <select
-              className="w-full bg-neutral-700 p-2 rounded"
+              className="w-full bg-neutral-950 border border-neutral-700 p-2.5 rounded-lg text-neutral-200"
               value={yColumn}
               onChange={(e) => setYColumn(e.target.value)}
             >
@@ -240,7 +240,7 @@ export default function GraphPage() {
 
         <button
           onClick={generateGraph}
-          className="w-full bg-white hover:bg-gray-200 text-black py-2 rounded-lg"
+          className="w-full bg-white hover:bg-neutral-200 text-neutral-900 py-2.5 rounded-lg font-semibold"
         >
           Generate
         </button>
@@ -248,3 +248,4 @@ export default function GraphPage() {
     </div>
   );
 }
+

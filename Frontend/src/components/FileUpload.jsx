@@ -1,11 +1,5 @@
 import { useState } from "react";
-import {
-  Upload,
-  FileText,
-  Loader2,
-  CheckCircle,
-  RefreshCw,
-} from "lucide-react";
+import { Upload, Loader2, CheckCircle, RefreshCw } from "lucide-react";
 
 export default function FileUpload() {
   const [status, setStatus] = useState("");
@@ -49,7 +43,7 @@ export default function FileUpload() {
   };
 
   return (
-    <div className="p-4 border-b border-neutral-800">
+    <div className="p-0">
       {/* SHOW UPLOAD BOX ONLY IF NOT UPLOADED */}
       {!uploaded && (
         <label className="cursor-pointer block">
@@ -60,19 +54,19 @@ export default function FileUpload() {
             className="hidden"
           />
 
-          <div className="flex flex-col items-center justify-center gap-2 p-4 border border-dashed border-neutral-700 rounded-xl hover:border-neutral-500 transition-all bg-neutral-900">
+          <div className="flex flex-col items-center justify-center gap-2 p-4 border border-dashed border-neutral-700 rounded-xl hover:border-neutral-300 transition-all bg-neutral-950/50">
             {loading ? (
               <>
-                <Loader2 className="animate-spin text-neutral-400" size={22} />
-                <p className="text-sm text-neutral-400">Uploading...</p>
+                <Loader2 className="animate-spin text-white" size={22} />
+                <p className="text-sm text-neutral-300">Uploading...</p>
               </>
             ) : (
               <>
                 <Upload size={22} className="text-neutral-400" />
-                <p className="text-sm text-neutral-300 font-medium">
-                  Upload CSV Dataset
+                <p className="text-sm text-neutral-200 font-semibold">
+                  Upload Dataset
                 </p>
-                <p className="text-xs text-neutral-500">Click to select file</p>
+                <p className="text-xs text-neutral-400">Click to select file</p>
               </>
             )}
           </div>
@@ -81,11 +75,13 @@ export default function FileUpload() {
 
       {/* SHOW SUCCESS STATE */}
       {uploaded && (
-        <div className="flex items-center justify-between p-3 bg-neutral-900 border border-neutral-800 rounded-xl">
-          <div className="flex items-center gap-2 text-green-400">
+        <div className="flex items-center justify-between p-3 bg-neutral-900 border border-green-700 rounded-xl">
+          <div className="flex items-center gap-2 text-green-500">
             <CheckCircle size={16} />
             <div>
-              <p className="text-xs font-medium text-white">Dataset Ready</p>
+              <p className="text-xs font-semibold text-neutral-100">
+                Dataset Ready
+              </p>
               <p className="text-xs text-neutral-400">{fileName}</p>
             </div>
           </div>
@@ -93,7 +89,7 @@ export default function FileUpload() {
           {/* Replace button */}
           <button
             onClick={resetUpload}
-            className="text-neutral-400 hover:text-white"
+            className="text-green-400 hover:text-gray-200"
           >
             <RefreshCw size={16} />
           </button>
@@ -102,7 +98,7 @@ export default function FileUpload() {
 
       {/* Status */}
       {status && !uploaded && (
-        <p className="text-xs mt-2 text-green-400">{status}</p>
+        <p className="text-xs mt-2 text-neutral-300">{status}</p>
       )}
     </div>
   );

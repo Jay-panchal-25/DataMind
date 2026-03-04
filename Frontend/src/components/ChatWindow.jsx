@@ -69,22 +69,27 @@ export default function ChatWindow() {
   };
 
   return (
-    <div className="flex-1 flex flex-col bg-neutral-900 overflow-hidden h-full">
-      <div className="flex-1 overflow-y-auto no-scrollbar px-25 py-6 space-y-6">
-        {messages.map((msg, index) => (
-          <MessageBubble
-            key={index}
-            role={msg.role}
-            type={msg.type}
-            content={msg.content}
-          />
-        ))}
-        <div ref={bottomRef} />
+    <div className="flex-1 flex flex-col bg-transparent overflow-hidden h-full relative">
+      <div className="flex-1 overflow-y-auto no-scrollbar px-4 md:px-8 py-6 pb-36">
+        <div className="max-w-6xl mx-auto space-y-5">
+          {messages.map((msg, index) => (
+            <MessageBubble
+              key={index}
+              role={msg.role}
+              type={msg.type}
+              content={msg.content}
+            />
+          ))}
+          <div ref={bottomRef} />
+        </div>
       </div>
 
-      <div className="bg-neutral-900 px-20">
-        <ChatInput onSend={sendMessage} disabled={isSending} />
+      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-neutral-950 via-neutral-950/95 to-transparent px-4 md:px-8 py-5">
+        <div className="max-w-6xl mx-auto">
+          <ChatInput onSend={sendMessage} disabled={isSending} />
+        </div>
       </div>
     </div>
   );
 }
+
