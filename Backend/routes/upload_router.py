@@ -1,6 +1,7 @@
 import tempfile
 from pathlib import Path
 from fastapi import APIRouter, UploadFile, File
+from fastapi.concurrency import run_in_threadpool
 
 from core.data_loader import DataLoader
 from core.pipeline_manager import run_pipeline
@@ -27,7 +28,7 @@ async def upload_file(file: UploadFile = File(...)):
         temp.close()
 
         # run pipeline
-        result = run_pipeline(temp.name)
+        result = await run_in_threadpool(run_pipeline, temp.name)
 
         df = result.get("data")
 

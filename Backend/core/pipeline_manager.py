@@ -1,22 +1,20 @@
 from core.data_loader import DataLoader
 from core.data_cleaner import data_cleaner
-from core.outlier_detector import OutlierDetector
-from ml.imputers import DataImputer
+from core.outlier_detector import clean
 
 
+def run_pipeline(file_path, outlier_method="auto", outlier_action="remove", contamination=0.05):
 
-def run_pipeline(file_path):
-    load_data = lambda file_path: DataLoader().load(file_path)[0]
-    df = load_data(file_path)
 
+    # Step 1: Load
+    df = DataLoader().load(file_path)[0]
+
+    # Step 2: Clean
     df = data_cleaner(df)
 
-    imputer = DataImputer(strategy="knn")
-    df, impute_report = imputer.fit_transform(df)
+    # Step 3: Outlier detection + handling
+    df= clean(df)
 
-    outlier_detector = OutlierDetector(contamination=0.05)
-    df, outlier_report = outlier_detector.detect(df)
-    
     return {
         "data": df,
     }

@@ -5,7 +5,7 @@ DataMind is a data analysis assistant that lets you upload a dataset, ask questi
 **Features**
 
 1. Upload CSV/Excel datasets and keep them in a simple in-memory store.
-2. Ask natural-language questions for basic analytics.
+2. Ask natural-language questions for analytics.
 3. Generate charts (histogram, bar, pie, line, scatter) from selected columns.
 4. Paginated dataset preview with JSON-safe values.
 

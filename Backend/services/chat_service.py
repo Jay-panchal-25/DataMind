@@ -2,7 +2,6 @@ from ml.intent_detector import IntentDetector
 from ml.query_engine import QueryEngine
 from ml.visualization_engine import VisualizationEngine
 
-
 class ChatService:
 
     def __init__(self, dataframe):
@@ -23,15 +22,15 @@ class ChatService:
 
         # Step 2: route to correct engine
 
-        if intent == "analytics":
-
+        if intent in ("analytics", "filter", "groupby"):
+            # All three intents use QueryEngine — it handles filter/groupby internally
             result = self.query_engine.execute(user_message)
 
             return {
                 "type": "text",
                 "content": self._format_analytics_response(result)
             }
-
+        
         elif intent == "visualization":
 
             chart_data = self.visualization_engine.generate_graph(user_message)
@@ -46,7 +45,6 @@ class ChatService:
                 "type": "chart",
                 "content": chart_data
             }
-
         else:
 
             return {
@@ -68,19 +66,11 @@ class ChatService:
         operation = result.get("operation")
         column = result.get("column")
         value = result.get("result")
+        groupby = result.get("groupby")
+        filters = result.get("filters", [])
 
         if operation is None or column is None:
             return str(result)
-
-        # Convert numpy/pandas scalar types to plain Python values when possible.
-        if hasattr(value, "item"):
-            try:
-                value = value.item()
-            except Exception:
-                pass
-
-        if isinstance(value, float):
-            value = round(value, 2)
 
         operation_text = {
             "max": "maximum",
@@ -93,4 +83,34 @@ class ChatService:
             "var": "variance",
         }.get(operation, operation)
 
-        return f"The {operation_text} of {column} is {value}."
+        # Format filter description
+        filter_text = ""
+        if filters:
+            parts = [f"{col} {op} {val}" for col, op, val in filters]
+            filter_text = f" (filtered by: {', '.join(parts)})"
+
+        # Format groupby result (dict of group → value)
+        if groupby and isinstance(value, dict):
+            lines = [f"The {operation_text} of {column} grouped by {groupby}{filter_text}:"]
+            for group, val in value.items():
+                if hasattr(val, "item"):
+                    try:
+                        val = val.item()
+                    except Exception:
+                        pass
+                if isinstance(val, float):
+                    val = round(val, 2)
+                lines.append(f"  • {group}: {val}")
+            return "\n".join(lines)
+
+        # Format plain scalar result
+        if hasattr(value, "item"):
+            try:
+                value = value.item()
+            except Exception:
+                pass
+
+        if isinstance(value, float):
+            value = round(value, 2)
+
+        return f"The {operation_text} of {column}{filter_text} is {value}."
