@@ -27,11 +27,6 @@ export default function ChatMessage({ message }) {
 
         {type === "analysis" && (
           <div className="space-y-3">
-            {content.summary && (
-              <div className="rounded-[22px] rounded-bl-md border border-[#17301d] bg-[#081108] px-4 py-3 text-sm leading-7 text-[#e8ffe8]">
-                {content.summary}
-              </div>
-            )}
 
             {content.columns?.length > 0 && (
               <div className="overflow-hidden rounded-[22px] border border-[#17301d] bg-[#071007]">

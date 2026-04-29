@@ -184,7 +184,7 @@ function UploadStage({ file, onFileChange, onUpload, uploading }) {
     <div className="flex min-h-[calc(100vh-3rem)] items-center justify-center">
       <div className="w-full max-w-2xl rounded-[32px] border border-[#17301d] bg-[#071007] p-8 shadow-[0_24px_90px_rgba(0,0,0,0.45)]">
         <p className="text-xs uppercase tracking-[0.34em] text-[#74c184]">
-          DataMind
+          welcome to DataMind
         </p>
         <h1 className="mt-4 text-4xl font-semibold text-white">
           Upload your dataset
@@ -281,18 +281,7 @@ function OverviewStage({ datasetMeta, onOpenChat, onOpenDataset }) {
           </section>
         </div>
 
-        {datasetMeta.report?.warnings?.length > 0 && (
-          <div className="mt-6 space-y-2">
-            {datasetMeta.report.warnings.map((warning) => (
-              <div
-                key={warning}
-                className="rounded-2xl border border-[#18311d] bg-[#050a05] px-4 py-3 text-sm text-[#b8dfbf]"
-              >
-                {warning}
-              </div>
-            ))}
-          </div>
-        )}
+    
 
         <div className="mt-8 flex flex-col gap-3 sm:flex-row">
           <button
@@ -388,23 +377,6 @@ function DatasetWorkspace({ data, onPageChange }) {
           </section>
         </div>
 
-        {report.warnings?.length > 0 && (
-          <section className="rounded-[24px] border border-[#17301d] bg-[#071007] p-5">
-            <p className="text-xs uppercase tracking-[0.24em] text-[#74c184]">
-              Notes
-            </p>
-            <div className="mt-4 space-y-2">
-              {report.warnings.map((warning) => (
-                <div
-                  key={warning}
-                  className="rounded-2xl border border-[#18311d] bg-[#050a05] px-4 py-3 text-sm text-[#b8dfbf]"
-                >
-                  {warning}
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
 
         <section className="rounded-[24px] border border-[#17301d] bg-[#071007] p-5">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -484,7 +456,7 @@ function ChatWorkspace({
   onSend,
 }) {
   return (
-    <div className="flex min-h-[calc(100vh-3rem)] flex-1 flex-col">
+    <div className="flex min-h-0 min-h-[calc(100vh-3rem)] flex-1 flex-col">
       <div className="border-b border-[#112015] px-6 py-5">
         <p className="text-xs uppercase tracking-[0.3em] text-[#74c184]">
           Analysis chat
@@ -498,18 +470,13 @@ function ChatWorkspace({
         </p>
       </div>
 
-      <div className="flex-1 overflow-y-auto px-6 py-6">
+      <div className="min-h-0 flex-1 overflow-y-auto px-6 py-6">
         {messages.length === 0 && !loading ? (
           <div className="mx-auto max-w-4xl rounded-[28px] border border-[#17301d] bg-[#071007] px-6 py-7">
             <p className="text-sm text-[#8ab38f]">Ready to analyze</p>
             <h2 className="mt-2 text-2xl font-semibold text-white">
               Start asking about {datasetMeta.fileName}
             </h2>
-            <div className="mt-5 flex flex-wrap gap-2">
-              <SuggestionPill label="What are the key patterns in this dataset?" />
-              <SuggestionPill label="Show max and min salary by department" />
-              <SuggestionPill label="Create a chart for age distribution" />
-            </div>
           </div>
         ) : (
           <div className="mx-auto w-full max-w-4xl space-y-4">
@@ -529,7 +496,7 @@ function ChatWorkspace({
         )}
       </div>
 
-      <div className="border-t border-[#112015] px-6 py-5">
+      <div className="shrink-0 border-t border-[#112015] px-6 py-5">
         <div className="mx-auto max-w-4xl">
           <div className="flex gap-3 rounded-[24px] border border-[#17301d] bg-[#050905] p-3">
             <textarea

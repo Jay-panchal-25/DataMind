@@ -90,32 +90,7 @@ export default function PredictionCard({ data }) {
         </div>
       )}
 
-      {feature_importance && (
-        <div className="mt-5">
-          <h3 className="text-sm font-semibold uppercase tracking-[0.24em] text-[#7da684]">
-            Feature importance
-          </h3>
-          <div className="mt-3 space-y-3">
-            {Object.entries(feature_importance).map(([feature, score]) => (
-              <div
-                key={feature}
-                className="grid grid-cols-[120px_1fr_70px] items-center gap-3"
-              >
-                <div className="truncate text-sm text-[#d1ebd5]">{feature}</div>
-                <div className="h-3 rounded-full bg-[#122015]">
-                  <div
-                    className="h-3 rounded-full bg-gradient-to-r from-[#1faa59] to-[#59d98c]"
-                    style={{ width: `${score * 100}%` }}
-                  />
-                </div>
-                <div className="text-right text-sm text-[#8bb292]">
-                  {(score * 100).toFixed(1)}%
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
+      
     </div>
   );
 }
