@@ -1,44 +1,52 @@
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap");
 @import "tailwindcss";
 
 :root {
-  --bg-app: #070b14;
-  --bg-surface: #0f172a;
-  --bg-surface-soft: #111c34;
-  --text-primary: #e2e8f0;
-  --text-secondary: #94a3b8;
-  --border-soft: #1e293b;
-  --brand: #3b82f6;
+  color-scheme: dark;
+  font-family: "Segoe UI", sans-serif;
+  background: #010201;
+}
+
+html {
+  background: #010201;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background: #010201;
+  color: #e8ffe8;
 }
 
 * {
   box-sizing: border-box;
 }
 
-body {
-  margin: 0;
-  font-family: "Roboto", sans-serif;
-  background: radial-gradient(
-    circle at top right,
-    #0f1b38 0%,
-    var(--bg-app) 42%
-  );
-  color: var(--text-primary);
-  line-height: 1.55;
+button,
+input,
+textarea {
+  font: inherit;
 }
 
-h1,
-h2,
-h3 {
-  font-family: "Roboto", sans-serif;
-  letter-spacing: 0;
+::selection {
+  background: rgba(31, 170, 89, 0.35);
+  color: #f4fff4;
 }
 
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
 }
 
-.no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+::-webkit-scrollbar-track {
+  background: #061006;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 9999px;
+  background: #23452a;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #2f6139;
 }

@@ -6,10 +6,14 @@ readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
     "fastapi>=0.131.0",
+    "google-genai>=1.73.1",
+    "google-generativeai>=0.8.6",
+    "matplotlib>=3.10.9",
     "numpy>=2.4.2",
     "pandas>=3.0.1",
     "pathlib>=1.0.1",
-"python-dateutil>=2.9.0.post0",
+    "python-dateutil>=2.9.0.post0",
+    "python-dotenv>=1.2.2",
     "python-multipart>=0.0.22",
     "scikit-learn>=1.8.0",
     "typing>=3.10.0.0",

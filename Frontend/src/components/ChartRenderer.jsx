@@ -1,171 +1,112 @@
-import {
-  BarChart,
-  Bar,
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  Tooltip,
-  ScatterChart,
-  Scatter,
-  CartesianGrid,
-  PieChart,
-  Pie,
-  Cell,
-} from "recharts";
+export default function ChartRenderer({ data }) {
+  if (!data) return null;
 
-const COLORS = {
-  primary: "#ff7f0e",
-  secondary: "#1f77b4",
-  grid: "#334155",
-  axis: "#cbd5e1",
-};
-
-const PIE_COLORS = ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd"];
-
-function buildChartTitle(chart) {
-  const typeLabel = chart.chart_type
-    ? chart.chart_type.charAt(0).toUpperCase() + chart.chart_type.slice(1)
-    : "Chart";
-
-  if (chart.chart_type === "scatter" && chart.x_column && chart.y_column) {
-    return `${typeLabel} Chart: ${chart.y_column} vs ${chart.x_column}`;
+  if (data.image) {
+    return (
+      <div className="overflow-hidden rounded-[24px] border border-[#17301d] bg-[#071007] p-4 shadow-[0_16px_40px_rgba(0,0,0,0.32)]">
+        <img
+          src={`data:image/png;base64,${data.image}`}
+          alt="chart"
+          className="w-full rounded-[18px]"
+        />
+      </div>
+    );
   }
 
-  if (chart.column) {
-    return `${typeLabel} Chart: ${chart.column}`;
-  }
+  const { chart_type, labels, values, x, y } = data;
 
-  return `${typeLabel} Chart`;
+  return (
+    <div className="rounded-[24px] border border-[#17301d] bg-[#071007] p-5 shadow-[0_16px_40px_rgba(0,0,0,0.32)]">
+      <div className="mb-5 flex items-center justify-between gap-3">
+        <div>
+          <p className="text-xs uppercase tracking-[0.28em] text-[#6d8d73]">
+            Visualization
+          </p>
+          <h2 className="mt-2 text-lg font-semibold capitalize text-white">
+            {chart_type} chart
+          </h2>
+        </div>
+      </div>
+
+      {(chart_type === "bar" ||
+        chart_type === "pie" ||
+        chart_type === "histogram") && (
+        <SimpleBar labels={labels || []} values={values || []} />
+      )}
+
+      {chart_type === "line" && <LineChart values={values || []} />}
+
+      {chart_type === "scatter" && <ScatterPlot x={x || []} y={y || []} />}
+    </div>
+  );
 }
 
-export default function ChartRenderer({ chart }) {
-  if (!chart) return null;
-  const title = buildChartTitle(chart);
+function SimpleBar({ labels, values }) {
+  if (!labels.length || !values.length) {
+    return <p className="text-sm text-[#7a977f]">No data to display.</p>;
+  }
 
-  // BAR + LINE + HISTOGRAM
-  if (
-    chart.chart_type === "bar" ||
-    chart.chart_type === "line" ||
-    chart.chart_type === "histogram"
-  ) {
-    const data = chart.labels.map((label, index) => ({
-      name: label,
-      value: chart.values[index],
-    }));
+  const max = Math.max(...values, 1);
 
-    // HISTOGRAM (just bar chart with no radius + tighter bars)
-    if (chart.chart_type === "histogram") {
-      return (
-        <div className="space-y-3">
-          <p className="text-sm font-semibold text-neutral-200">{title}</p>
-          <BarChart width={500} height={300} data={data}>
-            <CartesianGrid stroke={COLORS.grid} strokeDasharray="3 3" />
-            <XAxis dataKey="name" stroke={COLORS.axis} tick={{ fill: COLORS.axis, fontSize: 12 }} />
-            <YAxis stroke={COLORS.axis} tick={{ fill: COLORS.axis, fontSize: 12 }} />
-            <Tooltip />
-            <Bar dataKey="value" fill={COLORS.primary} />
-          </BarChart>
+  return (
+    <div className="space-y-3">
+      {labels.map((label, index) => (
+        <div key={index} className="grid grid-cols-[120px_1fr_72px] items-center gap-3">
+          <div className="truncate text-sm text-[#cfead4]">{label}</div>
+          <div className="h-3 rounded-full bg-[#122015]">
+            <div
+              className="h-3 rounded-full bg-gradient-to-r from-[#1faa59] to-[#59d98c]"
+              style={{ width: `${(values[index] / max) * 100}%` }}
+            />
+          </div>
+          <div className="text-right text-sm text-[#8bb292]">{values[index]}</div>
         </div>
-      );
-    }
+      ))}
+    </div>
+  );
+}
 
-    if (chart.chart_type === "bar") {
-      return (
-        <div className="space-y-3">
-          <p className="text-sm font-semibold text-neutral-200">{title}</p>
-          <BarChart width={500} height={300} data={data}>
-            <CartesianGrid stroke={COLORS.grid} strokeDasharray="3 3" />
-            <XAxis dataKey="name" stroke={COLORS.axis} tick={{ fill: COLORS.axis, fontSize: 12 }} />
-            <YAxis stroke={COLORS.axis} tick={{ fill: COLORS.axis, fontSize: 12 }} />
-            <Tooltip />
-            <Bar dataKey="value" fill={COLORS.primary} radius={[4, 4, 0, 0]} />
-          </BarChart>
-        </div>
-      );
-    }
-
-    return (
-      <div className="space-y-3">
-        <p className="text-sm font-semibold text-neutral-200">{title}</p>
-        <LineChart width={500} height={300} data={data}>
-          <CartesianGrid stroke={COLORS.grid} strokeDasharray="3 3" />
-          <XAxis dataKey="name" stroke={COLORS.axis} tick={{ fill: COLORS.axis, fontSize: 12 }} />
-          <YAxis stroke={COLORS.axis} tick={{ fill: COLORS.axis, fontSize: 12 }} />
-          <Tooltip />
-          <Line
-            type="monotone"
-            dataKey="value"
-            stroke={COLORS.primary}
-            strokeWidth={2}
-            dot={{ r: 4 }}
-          />
-        </LineChart>
-      </div>
-    );
+function LineChart({ values }) {
+  if (!values.length) {
+    return <p className="text-sm text-[#7a977f]">No data to display.</p>;
   }
 
-  // SCATTER
-  if (chart.chart_type === "scatter") {
-    const data = chart.x.map((x, i) => ({
-      x,
-      y: chart.y[i],
-    }));
+  const max = Math.max(...values, 1);
+  const min = Math.min(...values, 0);
 
-    return (
-      <div className="space-y-3">
-        <p className="text-sm font-semibold text-neutral-200">{title}</p>
-        <ScatterChart width={500} height={300}>
-          <CartesianGrid stroke={COLORS.grid} />
-          <XAxis dataKey="x" stroke={COLORS.axis} tick={{ fill: COLORS.axis, fontSize: 12 }} />
-          <YAxis dataKey="y" stroke={COLORS.axis} tick={{ fill: COLORS.axis, fontSize: 12 }} />
-          <Tooltip />
-          <Scatter data={data} fill={COLORS.secondary} />
-        </ScatterChart>
-      </div>
-    );
+  return (
+    <div className="flex h-48 items-end gap-2 rounded-[20px] border border-[#17301d] bg-[#050a05] p-4">
+      {values.map((value, index) => (
+        <div
+          key={index}
+          className="flex-1 rounded-t-full bg-gradient-to-t from-[#14783b] to-[#59d98c]"
+          style={{ height: `${((value - min) / (max - min || 1)) * 100}%` }}
+        />
+      ))}
+    </div>
+  );
+}
+
+function ScatterPlot({ x, y }) {
+  if (!x.length || !y.length) {
+    return <p className="text-sm text-[#7a977f]">No data to display.</p>;
   }
 
-  // PIE
-  // PIE
-  if (chart.chart_type === "pie") {
-    const data = chart.labels.map((label, index) => ({
-      name: label,
-      value: chart.values[index],
-    }));
+  const maxX = Math.max(...x, 1);
+  const maxY = Math.max(...y, 1);
 
-    const total = data.reduce((sum, entry) => sum + entry.value, 0);
-
-    const renderCustomLabel = ({ name, value }) => {
-      const percent = ((value / total) * 100).toFixed(1);
-      return `${name} (${percent}%)`;
-    };
-
-    return (
-      <div className="space-y-3">
-        <p className="text-sm font-semibold text-neutral-200">{title}</p>
-        <PieChart width={500} height={300}>
-          <Tooltip />
-          <Pie
-            data={data}
-            dataKey="value"
-            nameKey="name"
-            cx="50%"
-            cy="50%"
-            outerRadius={100}
-            label={renderCustomLabel}
-          >
-            {data.map((entry, index) => (
-              <Cell
-                key={`cell-${index}`}
-                fill={PIE_COLORS[index % PIE_COLORS.length]}
-              />
-            ))}
-          </Pie>
-        </PieChart>
-      </div>
-    );
-  }
-
-  return <p>Unsupported chart type</p>;
+  return (
+    <div className="relative h-64 w-full rounded-[20px] border border-[#17301d] bg-[linear-gradient(180deg,#081008,#020402)]">
+      {x.map((_, index) => (
+        <div
+          key={index}
+          className="absolute h-3 w-3 -translate-x-1/2 translate-y-1/2 rounded-full border border-[#dffff0] bg-[#59d98c] shadow-[0_0_18px_rgba(89,217,140,0.45)]"
+          style={{
+            left: `${(x[index] / maxX) * 100}%`,
+            bottom: `${(y[index] / maxY) * 100}%`,
+          }}
+        />
+      ))}
+    </div>
+  );
 }

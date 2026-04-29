@@ -15,15 +15,29 @@ class ChatRequest(BaseModel):
 def chat(request: ChatRequest):
 
     df = DATASTORE.get("df")
+    memory = DATASTORE.get("memory")
 
-    if df is None:
+    if df is None or df.empty:
         return {
             "type": "text",
             "content": "Please upload a dataset first."
         }
 
-    chat_service = ChatService(df)
+    try:
+        chat_service = ChatService(df, memory=memory)
+        result = chat_service.process(request.message)
 
-    result = chat_service.process(request.message)
+        # safe fallback (important for LLM errors / crashes)
+        if result is None:
+            return {
+                "type": "text",
+                "content": "I couldn't process your request."
+            }
 
-    return result
+        return result
+
+    except Exception as e:
+        return {
+            "type": "text",
+            "content": f"Chat error: {str(e)}"
+        }

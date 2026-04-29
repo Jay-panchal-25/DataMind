@@ -2,49 +2,62 @@ import numpy as np
 import pandas as pd
 
 
-def clean(df: pd.DataFrame, method: str = "median", threshold: float = 3.0) -> pd.DataFrame:
-    """
-    Fix both NA values and outliers in one function.
-    - NA      : filled with mean or median
-    - Outliers: detected with Z-Score, replaced with mean or median
+IDENTIFIER_KEYWORDS = {"id", "code", "index"}
 
-    Args:
-        df        : Input DataFrame
-        method    : "mean" or "median"
-        threshold : Z-score cutoff (default 3.0)
+
+def clean(df: pd.DataFrame, method: str = "median", iqr_multiplier: float = 2.0) -> pd.DataFrame:
+    """
+    Fill missing numeric values and replace numeric outliers using an IQR-based rule.
+    This is more reliable than z-score for small and skewed datasets.
     """
     df = df.copy()
     numeric_cols = df.select_dtypes(include=[np.number]).columns
 
     for col in numeric_cols:
-        # --- Step 1: Fix NA first ---
-        na_count = df[col].isna().sum()
-        if na_count > 0:
-            fix_value = df[col].median() if method == "median" else df[col].mean()
-            df[col] = df[col].fillna(fix_value)
-            print(f"[{col}] {na_count} NA(s) filled with {method} = {fix_value:.4f}")
-        else:
-            print(f"[{col}] No missing values")
-
-        # --- Step 2: Fix Outliers ---
-        mean = df[col].mean()
-        std  = df[col].std()
-
-        if std == 0:
-            print(f"[{col}] Skipped outlier check — all values are the same")
+        if _is_identifier_like(col, df[col]):
             continue
 
-        z_scores = (df[col] - mean).abs() / std
-        outliers = z_scores > threshold
-        count = outliers.sum()
+        series = pd.to_numeric(df[col], errors="coerce").astype("Float64")
 
-        if count > 0:
-            fix_value = df[col].median() if method == "median" else df[col].mean()
-            df.loc[outliers, col] = fix_value
-            print(f"[{col}] {count} outlier(s) fixed with {method} = {fix_value:.4f}")
-        else:
-            print(f"[{col}] No outliers found")
+        if series.isna().any():
+            fill_value = series.median() if method == "median" else series.mean()
+            series = series.fillna(fill_value)
+
+        non_null = series.dropna()
+        if non_null.empty or non_null.nunique() <= 2:
+            df[col] = series
+            continue
+
+        q1 = non_null.quantile(0.25)
+        q3 = non_null.quantile(0.75)
+        iqr = q3 - q1
+
+        if pd.isna(iqr) or iqr == 0:
+            df[col] = series
+            continue
+
+        lower_bound = q1 - iqr_multiplier * iqr
+        upper_bound = q3 + iqr_multiplier * iqr
+        outlier_mask = (series < lower_bound) | (series > upper_bound)
+
+        if outlier_mask.any():
+            replacement = non_null.median() if method == "median" else non_null.mean()
+            series.loc[outlier_mask] = replacement
+
+        df[col] = series
 
     return df
 
 
+def _is_identifier_like(column_name: str, series: pd.Series):
+    normalized = column_name.lower().strip()
+
+    if normalized in IDENTIFIER_KEYWORDS or normalized.endswith("_id"):
+        return True
+
+    non_null = series.dropna()
+    if non_null.empty:
+        return False
+
+    uniqueness_ratio = non_null.nunique() / len(non_null)
+    return uniqueness_ratio > 0.98 and non_null.is_monotonic_increasing

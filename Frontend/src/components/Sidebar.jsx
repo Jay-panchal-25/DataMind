@@ -1,47 +1,63 @@
-import FileUpload from "./FileUpload";
-import { Link, useLocation } from "react-router-dom";
-import { MessageSquare, Database, BarChart3 } from "lucide-react";
-
-export default function Sidebar() {
-  const location = useLocation();
-
-  const navItem = (path, label, Icon) => (
-    <Link
-      to={path}
-      className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all text-sm font-semibold
-        ${
-          location.pathname === path
-            ? "bg-white text-neutral-900 shadow-sm"
-            : "text-neutral-300 hover:bg-neutral-800/80"
-        }`}
-    >
-      <Icon size={18} />
-      {label}
-    </Link>
-  );
-
+export default function Sidebar({ activeView, datasetMeta, onViewChange }) {
   return (
-    <div className="w-72 h-screen bg-neutral-900 border-r border-neutral-800 flex flex-col shadow-xl shadow-black/20">
-      <div className="border-b border-neutral-800 px-6 py-6">
-        <div className="flex items-center gap-3">
-          <img src="/logo.png" alt="DataMind Logo" className="w-12 h-12 rounded-xl ring-1 ring-neutral-700" />
-          <div>
-            <p className="text-xl font-extrabold text-neutral-100 tracking-tight">DataMind</p>
-            <p className="text-xs text-neutral-400">Data Chat Workspace</p>
-          </div>
+    <aside className="w-full shrink-0 rounded-[28px] border border-[#17301d] bg-[#050905] p-5 lg:w-[290px]">
+      <p className="text-xs uppercase tracking-[0.3em] text-[#74c184]">
+        DataMind
+      </p>
+      <h2 className="mt-3 text-3xl font-semibold text-white">Workspace</h2>
+
+      <div className="mt-8 space-y-3">
+        <SidebarButton
+          active={activeView === "dataset"}
+          label="Dataset viewer"
+          onClick={() => onViewChange("dataset")}
+        />
+
+        <SidebarButton
+          active={activeView === "chat"}
+          label="Chat section"
+          onClick={() => onViewChange("chat")}
+        />
+      </div>
+
+      <div className="mt-8 rounded-[24px] border border-[#17301d] bg-[#071007] p-4">
+        <p className="text-xs uppercase tracking-[0.24em] text-[#74c184]">
+          Current dataset
+        </p>
+        <p className="mt-3 break-words text-sm font-medium text-white">
+          {datasetMeta.fileName}
+        </p>
+        <div className="mt-4 space-y-3 text-sm text-[#b8dfbf]">
+          <SidebarLine label="Rows" value={datasetMeta.rows} />
+          <SidebarLine label="Columns" value={datasetMeta.columns.length} />
+          <SidebarLine label="Status" value="Ready" />
         </div>
       </div>
-
-      <div className="px-4 space-y-2 mt-5">
-        {navItem("/", "Chat", MessageSquare)}
-        {navItem("/dataset", "Dataset Viewer", Database)}
-        {navItem("/graph", "AI Graph", BarChart3)}
-      </div>
-
-      <div className="mt-auto p-4 border-t border-neutral-800 bg-neutral-900">
-        <FileUpload />
-      </div>
-    </div>
+    </aside>
   );
 }
 
+function SidebarButton({ active, label, onClick }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={`w-full rounded-[20px] border px-4 py-3 text-left text-sm font-medium transition ${
+        active
+          ? "border-[#2b7a3f] bg-[#0d1b0f] text-[#dfffe5]"
+          : "border-[#17301d] bg-[#071007] text-[#b8dfbf] hover:bg-[#0a140b]"
+      }`}
+    >
+      {label}
+    </button>
+  );
+}
+
+function SidebarLine({ label, value }) {
+  return (
+    <div className="flex items-center justify-between gap-3">
+      <span className="text-[#7fa486]">{label}</span>
+      <span className="text-white">{value}</span>
+    </div>
+  );
+}

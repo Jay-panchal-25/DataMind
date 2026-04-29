@@ -1,233 +1,247 @@
-from ml.intent_detector import IntentDetector
-from ml.query_engine import QueryEngine
-from ml.visualization_engine import VisualizationEngine
+import re
+
+import pandas as pd
+
+from services.answer_synthesizer import synthesize_answer
+from services.execution_engine import execute_analysis
+from services.llm_planner import generate_plan
+from services.memory_manager import MemoryManager
+from services.visualization_service import generate_visualization
 
 
 class ChatService:
 
-    def __init__(self, dataframe):
+    def __init__(self, dataframe, memory=None):
         self.df = dataframe
-        self.intent_detector = IntentDetector()
-        self.query_engine = QueryEngine(dataframe)
-        self.visualization_engine = VisualizationEngine(dataframe)
+        self.memory = memory or MemoryManager()
 
     def process(self, user_message: str):
         if not user_message or not user_message.strip():
             return {
                 "type": "text",
-                "content": "Please enter a message.",
+                "content": "Please enter a message."
             }
 
-        intent = self.intent_detector.detect(user_message)
+        smalltalk_response = self._handle_smalltalk(user_message)
+        if smalltalk_response is not None:
+            self.memory.add(user_message, smalltalk_response)
+            return smalltalk_response
 
-        if intent in ("analytics", "filter", "groupby"):
-            result = self.query_engine.execute(user_message)
+        context = self.memory.get_context()
+        plan = generate_plan(
+            query=user_message,
+            columns=list(self.df.columns),
+            context=context
+        )
 
-            if isinstance(result, dict) and result.get("kind") == "table":
-                if self._is_single_value_table(result):
-                    return {
-                        "type": "text",
-                        "content": self._single_value_text_from_table(result),
-                    }
-                return {
-                    "type": "table",
-                    "content": result,
-                }
-
-            if isinstance(result, dict):
-                if self._is_single_value_result_dict(result):
-                    return {
-                        "type": "text",
-                        "content": self._single_value_text_from_result(result),
-                    }
-                table_payload = self._result_dict_to_table(result)
-                if self._is_single_value_table(table_payload):
-                    return {
-                        "type": "text",
-                        "content": self._single_value_text_from_table(table_payload),
-                    }
-                return {
-                    "type": "table",
-                    "content": table_payload,
-                }
-
+        if plan.get("type") == "error":
             return {
                 "type": "text",
-                "content": self._format_analytics_response(result),
+                "content": plan.get("message")
             }
 
-        if intent == "visualization":
-            chart_data = self.visualization_engine.generate_graph(user_message)
+        if plan.get("type") == "unknown":
+            fallback_response = self._handle_extreme_lookup(user_message)
+            if fallback_response is not None:
+                self.memory.add(user_message, fallback_response)
+                return fallback_response
 
-            if isinstance(chart_data, str):
-                return {
+            response = {
+                "type": "text",
+                "content": (
+                    "I couldn't map that to a dataset task yet. Try asking for a summary, "
+                    "grouped metric, chart, filter, or prediction."
+                )
+            }
+            self.memory.add(user_message, response)
+            return response
+
+        self.memory.set_last_plan(plan)
+
+        if plan["type"] == "analysis":
+            result = execute_analysis(self.df, plan)
+
+            if "error" in result:
+                response = {
                     "type": "text",
-                    "content": chart_data,
+                    "content": result["error"]
+                }
+            elif result.get("type") == "table":
+                response = {
+                    "type": "analysis",
+                    "content": {
+                        "summary": synthesize_answer(user_message, plan, result),
+                        "columns": result.get("columns", []),
+                        "rows": result.get("rows", []),
+                    }
+                }
+            else:
+                response = {
+                    "type": "text",
+                    "content": result.get("content", "No result returned.")
                 }
 
+        elif plan["type"] == "visualization":
+            result = generate_visualization(self.df, plan)
+
+            if "error" in result:
+                response = {
+                    "type": "text",
+                    "content": result["error"]
+                }
+            else:
+                response = {
+                    "type": "chart",
+                    "content": result
+                }
+
+        elif plan["type"] == "prediction":
+            target = plan.get("target")
+
+            from ml.automl_engine import AutoMLEngine
+            automl = AutoMLEngine(self.df)
+            result = automl.run(target, prediction_inputs=plan.get("prediction_inputs"))
+
+            if "error" in result:
+                response = {
+                    "type": "text",
+                    "content": result["error"]
+                }
+            else:
+                response = {
+                    "type": "prediction",
+                    "content": result
+                }
+
+        else:
+            response = {
+                "type": "text",
+                "content": "Could not understand request"
+            }
+
+        self.memory.add(user_message, response)
+        return response
+
+    def _handle_smalltalk(self, user_message: str):
+        normalized = user_message.strip().lower()
+        greetings = {
+            "hi",
+            "hello",
+            "hey",
+            "good morning",
+            "good afternoon",
+            "good evening",
+        }
+
+        if normalized in greetings:
             return {
-                "type": "chart",
-                "content": chart_data,
+                "type": "text",
+                "content": "Hello! Your dataset is ready. Ask me a question about the data."
+            }
+
+        return None
+
+    def _handle_extreme_lookup(self, user_message: str):
+        lower_query = user_message.lower()
+
+        if not any(token in lower_query for token in ["max", "maximum", "highest", "min", "minimum", "lowest"]):
+            return None
+
+        if not any(token in lower_query for token in ["who", "name", "person", "customer", "employee", "row", "record"]):
+            return None
+
+        operation = "max" if any(token in lower_query for token in ["max", "maximum", "highest"]) else "min"
+        metric_column = self._resolve_metric_column(lower_query)
+        if metric_column is None:
+            return None
+
+        metric_series = pd.to_numeric(self.df[metric_column], errors="coerce").dropna()
+        if metric_series.empty:
+            return None
+
+        target_value = metric_series.max() if operation == "max" else metric_series.min()
+        matched_rows = self.df.loc[metric_series.index][metric_series == target_value]
+
+        if matched_rows.empty:
+            return None
+
+        display_columns = self._resolve_display_columns(lower_query, metric_column)
+        result_columns = [*display_columns, metric_column]
+        result = matched_rows[result_columns].copy()
+
+        if len(result) == 1 and display_columns:
+            values = [
+                str(result.iloc[0][column])
+                for column in display_columns
+                if pd.notna(result.iloc[0][column])
+            ]
+            subject = ", ".join(values) if values else "Matching row"
+            return {
+                "type": "text",
+                "content": f"{subject} has the {operation} {metric_column}: {target_value}"
             }
 
         return {
-            "type": "text",
-            "content": "I could not understand your query.",
+            "type": "analysis",
+            "content": {
+                "summary": f"I found the row(s) with the {operation} {metric_column}.",
+                "columns": result.columns.tolist(),
+                "rows": result.astype("object").where(pd.notna(result), None).to_dict(orient="records"),
+            },
         }
 
-    def _to_python_scalar(self, value):
-        if hasattr(value, "item"):
-            try:
-                return value.item()
-            except Exception:
-                return value
-        return value
+    def _resolve_metric_column(self, lower_query: str):
+        normalized_query = self._normalize_text(lower_query)
+        matched_columns = []
 
-    def _result_dict_to_table(self, result: dict):
-        column = result.get("column")
-        value = result.get("result")
-        groupby = result.get("groupby")
-        filters = result.get("filters", [])
+        for column in self.df.columns:
+            normalized_column = self._normalize_text(column)
+            compact_column = normalized_column.replace(" ", "")
 
-        if groupby and isinstance(value, dict):
-            rows = []
-            for grp, val in value.items():
-                rows.append({
-                    groupby: self._to_python_scalar(grp),
-                    column: self._to_python_scalar(val),
-                })
-            return {
-                "kind": "table",
-                "title": f"{column} by {groupby}",
-                "columns": [groupby, column],
-                "rows": rows,
-                "row_count": len(rows),
-            }
+            if (
+                normalized_column and normalized_column in normalized_query
+            ) or (
+                compact_column and compact_column in normalized_query.replace(" ", "")
+            ):
+                matched_columns.append(column)
 
-        scalar_value = self._to_python_scalar(value)
-        row = {column: scalar_value}
-        if filters:
-            row["filters"] = "; ".join([f"{c} {o} {v}" for c, o, v in filters])
+        numeric_columns = [
+            column for column in matched_columns
+            if pd.api.types.is_numeric_dtype(self.df[column])
+        ]
+        if numeric_columns:
+            return numeric_columns[-1]
 
-        return {
-            "kind": "table",
-            "title": f"{column} result",
-            "columns": list(row.keys()),
-            "rows": [row],
-            "row_count": 1,
-        }
+        last_plan = self.memory.get_last_plan()
+        if last_plan:
+            target = last_plan.get("target")
+            if target in self.df.columns and pd.api.types.is_numeric_dtype(self.df[target]):
+                return target
 
-    def _is_single_value_table(self, table: dict) -> bool:
-        if not isinstance(table, dict):
-            return False
-        columns = table.get("columns", [])
-        rows = table.get("rows", [])
-        if len(rows) != 1:
-            return False
+        fallback_numeric = [
+            column for column in self.df.columns
+            if pd.api.types.is_numeric_dtype(self.df[column])
+        ]
+        return fallback_numeric[0] if fallback_numeric else None
 
-        if len(columns) == 1:
-            return True
+    def _resolve_display_columns(self, lower_query: str, metric_column: str):
+        preferred_keywords = ["name", "customer", "employee", "person", "client", "user"]
 
-        if len(columns) == 2 and "filters" in columns:
-            return True
+        semantic_matches = [
+            column for column in self.df.columns
+            if column != metric_column
+            and any(keyword in column.lower() for keyword in preferred_keywords)
+        ]
+        if semantic_matches:
+            return semantic_matches[:2]
 
-        return False
+        fallback = [
+            column for column in self.df.columns
+            if column != metric_column
+            and not pd.api.types.is_numeric_dtype(self.df[column])
+            and not pd.api.types.is_datetime64_any_dtype(self.df[column])
+        ]
+        return fallback[:2]
 
-    def _single_value_text_from_table(self, table: dict) -> str:
-        rows = table.get("rows", [])
-        if not rows:
-            return "No result found."
-
-        row = rows[0]
-        for key, val in row.items():
-            if key == "filters":
-                continue
-            return f"{key}: {val}"
-
-        return "No result found."
-
-    def _is_single_value_result_dict(self, result: dict) -> bool:
-        if not isinstance(result, dict):
-            return False
-        if result.get("groupby") is not None:
-            return False
-        value = result.get("result")
-        return not isinstance(value, dict)
-
-    def _single_value_text_from_result(self, result: dict) -> str:
-        operation = result.get("operation", "result")
-        column = result.get("column", "value")
-        value = self._to_python_scalar(result.get("result"))
-
-        operation_text = {
-            "max": "maximum",
-            "min": "minimum",
-            "mean": "average",
-            "sum": "sum",
-            "count": "count",
-            "median": "median",
-            "std": "standard deviation",
-            "var": "variance",
-        }.get(operation, operation)
-
-        return f"Your {operation_text} {column} is {value}."
-
-    def _format_analytics_response(self, result):
-        if isinstance(result, str):
-            if result == "Operation not found":
-                return "I could not detect the calculation. Try asking for max, min, average, sum, count, median, std, or variance."
-            if result == "Column not found":
-                return "I could not detect the column name. Please mention a column from your dataset."
-            return result
-
-        if not isinstance(result, dict):
-            return str(result)
-
-        operation = result.get("operation")
-        column = result.get("column")
-        value = result.get("result")
-        groupby = result.get("groupby")
-        filters = result.get("filters", [])
-
-        if operation is None or column is None:
-            return str(result)
-
-        operation_text = {
-            "max": "maximum",
-            "min": "minimum",
-            "mean": "average",
-            "sum": "sum",
-            "count": "count",
-            "median": "median",
-            "std": "standard deviation",
-            "var": "variance",
-        }.get(operation, operation)
-
-        filter_text = ""
-        if filters:
-            parts = [f"{col} {op} {val}" for col, op, val in filters]
-            filter_text = f" (filtered by: {', '.join(parts)})"
-
-        if groupby and isinstance(value, dict):
-            lines = [f"The {operation_text} of {column} grouped by {groupby}{filter_text}:"]
-            for group, val in value.items():
-                if hasattr(val, "item"):
-                    try:
-                        val = val.item()
-                    except Exception:
-                        pass
-                if isinstance(val, float):
-                    val = round(val, 2)
-                lines.append(f"  - {group}: {val}")
-            return "\n".join(lines)
-
-        if hasattr(value, "item"):
-            try:
-                value = value.item()
-            except Exception:
-                pass
-
-        if isinstance(value, float):
-            value = round(value, 2)
-
-        return f"The {operation_text} of {column}{filter_text} is {value}."
+    def _normalize_text(self, value: str):
+        return re.sub(r"[^a-z0-9]+", " ", (value or "").lower()).strip()
