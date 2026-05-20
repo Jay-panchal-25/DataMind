@@ -150,21 +150,6 @@ python -m uvicorn main:app --reload
 
 Backend runs at `http://localhost:8000`.
 
-### Optional environment configuration
-
-If you want LLM-assisted planning and summaries, create a `.env` file inside `Backend/` and provide a Gemini API key:
-
-```env
-GEMINI_API_KEY=your_key_here
-LLM_MODEL=gemini-2.5-flash
-CORS_ORIGINS=http://localhost:5173,http://127.0.0.1:5173
-MAX_UPLOAD_MB=25
-SESSION_TTL_MINUTES=90
-APPLY_OUTLIER_CORRECTION=false
-```
-
-Without it, the app falls back to rule-based planning for supported prompts.
-
 ### 2. Frontend
 
 From the `Frontend` directory:
@@ -187,11 +172,6 @@ VITE_API_BASE_URL=http://localhost:8000
 - `POST /upload` - Upload a dataset and start a new session.
 - `GET /dataset` - Get paginated dataset preview for the active session.
 - `POST /chat` - Send a chat query for the active session.
-
-Required header for dataset and chat requests:
-
-```http
-X-Session-ID: <session-id>
 
 ## 📝 Typical Workflow
 
