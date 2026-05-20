@@ -1,19 +1,24 @@
+import logging
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from core.settings import settings
 from routes.chat_router import router as chat_router
-from routes.upload_router import router as upload_router
 from routes.dataset_router import router as dataset_router
+from routes.upload_router import router as upload_router
 from dotenv import load_dotenv
+
 load_dotenv()
 
+logging.basicConfig(level=logging.INFO)
 
-app = FastAPI()
+app = FastAPI(title=settings.APP_NAME)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
+    allow_origins=settings.CORS_ORIGINS,
+    allow_credentials=settings.CORS_ALLOW_CREDENTIALS,
     allow_methods=["*"],
     allow_headers=["*"],
 )

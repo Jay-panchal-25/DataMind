@@ -2,12 +2,19 @@ import { useEffect, useRef, useState } from "react";
 
 import ChatMessage from "./components/ChatMessage";
 import Sidebar from "./components/Sidebar";
-import { getDataset, sendChat, uploadFile } from "./services/app";
+import {
+  getDataset,
+  getSessionId,
+  sendChat,
+  setSessionId,
+  uploadFile,
+} from "./services/app";
 
 const PAGE_SIZE = 12;
 
 export default function App() {
   const [file, setFile] = useState(null);
+  const [sessionId, setSessionState] = useState(getSessionId());
   const [datasetMeta, setDatasetMeta] = useState(null);
   const [datasetPage, setDatasetPage] = useState(null);
   const [messages, setMessages] = useState([]);
@@ -46,11 +53,8 @@ export default function App() {
     try {
       const response = await uploadFile(file);
       const payload = response.data;
-
-      if (payload.error) {
-        setError(payload.error);
-        return;
-      }
+      setSessionId(payload.session_id);
+      setSessionState(payload.session_id);
 
       setDatasetMeta({
         ...payload,
@@ -116,7 +120,7 @@ export default function App() {
     setStage("workspace");
   }
 
-  const hasDataset = Boolean(datasetMeta);
+  const hasDataset = Boolean(datasetMeta && sessionId);
 
   return (
     <div className="min-h-screen bg-[#020402] text-[#e8ffe8]">
@@ -245,14 +249,6 @@ function OverviewStage({ datasetMeta, onOpenChat, onOpenDataset }) {
                 label="Columns"
                 value={datasetMeta.report?.overview?.columns ?? 0}
               />
-              <InfoTile
-                label="File size"
-                value={`${datasetMeta.report?.overview?.file_size_mb ?? 0} MB`}
-              />
-              <InfoTile
-                label="Memory"
-                value={`${datasetMeta.report?.overview?.memory_usage_mb ?? 0} MB`}
-              />
             </div>
           </section>
 
@@ -269,19 +265,9 @@ function OverviewStage({ datasetMeta, onOpenChat, onOpenDataset }) {
                 label="Missing filled"
                 value={datasetMeta.report?.fixes?.missing_filled ?? 0}
               />
-              <InfoTile
-                label="Missing remaining"
-                value={datasetMeta.report?.fixes?.missing_after ?? 0}
-              />
-              <InfoTile
-                label="Outliers corrected"
-                value={datasetMeta.report?.fixes?.outlier_updates ?? 0}
-              />
             </div>
           </section>
         </div>
-
-    
 
         <div className="mt-8 flex flex-col gap-3 sm:flex-row">
           <button
@@ -341,14 +327,6 @@ function DatasetWorkspace({ data, onPageChange }) {
             <div className="mt-4 grid grid-cols-2 gap-3 text-sm">
               <InfoTile label="Rows" value={report.overview?.rows ?? 0} />
               <InfoTile label="Columns" value={report.overview?.columns ?? 0} />
-              <InfoTile
-                label="File size"
-                value={`${report.overview?.file_size_mb ?? 0} MB`}
-              />
-              <InfoTile
-                label="Memory"
-                value={`${report.overview?.memory_usage_mb ?? 0} MB`}
-              />
             </div>
           </section>
 
@@ -364,14 +342,6 @@ function DatasetWorkspace({ data, onPageChange }) {
               <InfoTile
                 label="Missing filled"
                 value={report.fixes?.missing_filled ?? 0}
-              />
-              <InfoTile
-                label="Missing remaining"
-                value={report.fixes?.missing_after ?? 0}
-              />
-              <InfoTile
-                label="Outliers corrected"
-                value={report.fixes?.outlier_updates ?? 0}
               />
             </div>
           </section>
@@ -526,14 +496,6 @@ function ChatWorkspace({
         </div>
       </div>
     </div>
-  );
-}
-
-function SuggestionPill({ label }) {
-  return (
-    <span className="rounded-full border border-[#1f4b28] bg-[#091409] px-4 py-2 text-sm text-[#cfead4]">
-      {label}
-    </span>
   );
 }
 

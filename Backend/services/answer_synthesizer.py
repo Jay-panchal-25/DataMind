@@ -1,6 +1,6 @@
 import json
 
-from services.gemini_helper import generate_text
+from services.llm_service import llm_service
 
 SYSTEM_PROMPT = """
 You are an AI data analyst inside a dataset chat product.
@@ -38,7 +38,7 @@ Computed result:
 Write the final answer.
 """
 
-    text, _ = generate_text(SYSTEM_PROMPT, prompt, temperature=0.15)
+    text, _ = llm_service.invoke_text(SYSTEM_PROMPT, prompt, temperature=0.15)
     if text:
         return text
 

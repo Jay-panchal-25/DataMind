@@ -3,6 +3,22 @@ import pandas as pd
 from services.json_utils import to_json_safe
 
 
+def _apply_filter(data: pd.DataFrame, column: str, operator: str, value):
+    if operator == "==":
+        return data[data[column] == value]
+    if operator == "!=":
+        return data[data[column] != value]
+    if operator == ">":
+        return data[data[column] > value]
+    if operator == ">=":
+        return data[data[column] >= value]
+    if operator == "<":
+        return data[data[column] < value]
+    if operator == "<=":
+        return data[data[column] <= value]
+    raise ValueError(f"Unsupported operator '{operator}'")
+
+
 def execute_analysis(df: pd.DataFrame, plan: dict):
 
     if not isinstance(plan, dict) or "steps" not in plan:
@@ -24,20 +40,7 @@ def execute_analysis(df: pd.DataFrame, plan: dict):
                 if col not in data.columns:
                     return {"error": f"Column '{col}' not found"}
 
-                if op == "==":
-                    data = data[data[col] == val]
-                elif op == "!=":
-                    data = data[data[col] != val]
-                elif op == ">":
-                    data = data[data[col] > val]
-                elif op == ">=":
-                    data = data[data[col] >= val]
-                elif op == "<":
-                    data = data[data[col] < val]
-                elif op == "<=":
-                    data = data[data[col] <= val]
-                else:
-                    return {"error": f"Unsupported operator '{op}'"}
+                data = _apply_filter(data, col, op, val)
 
             # ---------------- DROPNA ----------------
             elif action == "dropna":
@@ -79,6 +82,18 @@ def execute_analysis(df: pd.DataFrame, plan: dict):
                 for col in groupby_cols:
                     if col not in data.columns:
                         return {"error": f"Column '{col}' not found"}
+
+            # ---------------- SELECT ----------------
+            elif action == "select":
+                cols = step.get("columns") or []
+                if not cols:
+                    return {"error": "select requires 'columns'"}
+
+                for col in cols:
+                    if col not in data.columns:
+                        return {"error": f"Column '{col}' not found"}
+
+                data = data.loc[:, cols]
 
             # ---------------- AGGREGATE ----------------
             elif action == "aggregate":

@@ -1,43 +1,55 @@
-from fastapi import APIRouter
-from pydantic import BaseModel
+import logging
 
+from fastapi import APIRouter, Header, HTTPException, status
+
+from schemas.api import ChatRequest, ChatResponse
 from services.chat_service import ChatService
-from routes.upload_router import DATASTORE
+from services.session_store import session_store
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
 
-class ChatRequest(BaseModel):
-    message: str
+@router.post("/chat", response_model=ChatResponse)
+def chat(
+    request: ChatRequest,
+    x_session_id: str | None = Header(default=None),
+):
+    state = session_store.get(x_session_id)
+    normalized_message = request.message.strip().lower()
+    greeting_tokens = {"hi", "hello", "hey", "hola", "namaste"}
 
+    if normalized_message.rstrip("!. ") in greeting_tokens:
+        if state is None or state.df is None or state.df.empty:
+            return {
+                "type": "text",
+                "content": "Hello! Upload a dataset first, then ask me about your data.",
+            }
 
-@router.post("/chat")
-def chat(request: ChatRequest):
-
-    df = DATASTORE.get("df")
-    memory = DATASTORE.get("memory")
-
-    if df is None or df.empty:
-        return {
-            "type": "text",
-            "content": "Please upload a dataset first."
-        }
+    if state is None or state.df is None or state.df.empty:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Dataset session not found. Please upload a dataset first.",
+        )
 
     try:
-        chat_service = ChatService(df, memory=memory)
+        chat_service = ChatService(
+            state.df,
+            memory=state.memory,
+            session_state=state,
+            quality=state.quality,
+        )
         result = chat_service.process(request.message)
-
-        # safe fallback (important for LLM errors / crashes)
         if result is None:
             return {
                 "type": "text",
-                "content": "I couldn't process your request."
+                "content": "I couldn't process your request.",
             }
-
         return result
-
-    except Exception as e:
-        return {
-            "type": "text",
-            "content": f"Chat error: {str(e)}"
-        }
+    except Exception as exc:
+        logger.exception("Chat request failed")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Chat error: {str(exc)}",
+        ) from exc

@@ -1,4 +1,4 @@
-from services.gemini_helper import generate_text
+from services.llm_service import llm_service
 
 SYSTEM_PROMPT = """
 You are a senior data analyst.
@@ -18,7 +18,7 @@ Dataset insights:
 Write a short summary in 3 to 5 lines.
 """
 
-    text, error = generate_text(SYSTEM_PROMPT, prompt, temperature=0.2)
+    text, error = llm_service.invoke_text(SYSTEM_PROMPT, prompt, temperature=0.2)
     if text:
         return text
 

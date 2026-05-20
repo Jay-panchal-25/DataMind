@@ -100,14 +100,21 @@ class InsightGenerator:
 
         strong_pairs = []
 
+        seen_pairs = set()
+
         for i in corr_matrix.columns:
             for j in corr_matrix.columns:
                 if i == j:
                     continue
 
+                pair_key = tuple(sorted((i, j)))
+                if pair_key in seen_pairs:
+                    continue
+
                 value = corr_matrix.loc[i, j]
 
                 if abs(value) > 0.7:
+                    seen_pairs.add(pair_key)
                     strong_pairs.append({
                         "feature_1": i,
                         "feature_2": j,

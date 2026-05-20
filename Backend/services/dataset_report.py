@@ -52,6 +52,8 @@ def _build_warnings(stats: dict, insights: dict):
     outlier_updates = int(stats.get("outliers", {}).get("total_changes", 0))
     if outlier_updates > 0:
         warnings.append(f"Corrected {outlier_updates} outlier values.")
+    elif int(stats.get("outliers", {}).get("total_candidates", 0)) > 0:
+        warnings.append("Potential outliers were detected but not auto-corrected.")
 
     remaining_missing = {
         column: int(value or 0)

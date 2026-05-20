@@ -1,62 +1,49 @@
-import json
 import re
 
-from services.gemini_helper import generate_text
+from pydantic import BaseModel, Field
+
+from services.llm_service import llm_service
+
+
+class FilterSchema(BaseModel):
+    column: str
+    operator: str
+    value: str | int | float | bool | None = None
+
+
+class PlannerSchema(BaseModel):
+    intent: str = "unknown"
+    operations: list[str] = Field(default_factory=list)
+    columns: list[str] = Field(default_factory=list)
+    groupby: str | None = None
+    chart_type: str | None = None
+    target: str | None = None
+    task_type: str | None = None
+    prediction_inputs: dict[str, str | int | float | bool] = Field(
+        default_factory=dict
+    )
+    filters: list[FilterSchema] = Field(default_factory=list)
 
 
 class LLMPlanner:
-    """
-    Converts a user query into a normalized plan the backend can execute.
-    """
-
     def __init__(self):
         self.system_prompt = """
 You are DataMind Planner AI.
 
-Convert the user query into strict JSON for one of these intents:
+Extract a structured dataset plan from the user request.
+Valid intents:
 - analytics
 - visualization
 - prediction
 - unknown
 
-Return only valid JSON in this shape:
-{
-  "intent": "analytics | visualization | prediction | unknown",
-  "operations": ["max", "min", "mean", "sum", "count"],
-  "columns": ["col1", "col2"],
-  "groupby": "column_name or null",
-  "chart_type": "bar | line | pie | scatter | histogram | null",
-  "target": "column_name or null",
-  "task_type": "regression | classification | null",
-  "prediction_inputs": {
-    "feature_name": "value"
-  },
-  "filters": [
-    {
-      "column": "col",
-      "operator": "== | != | > | < | >= | <=",
-      "value": "value"
-    }
-  ]
-}
-
 Rules:
-- Use only available columns
-- Use prediction intent when the user asks to predict a target from feature values
-- Use all requested aggregate operations, not just one
-- Return an empty array for operations when none are requested
-- Return an empty object for prediction_inputs when none are provided
+- Use only the provided columns.
+- For analytics, capture aggregate operations like max, min, mean, sum, count.
+- For visualization, choose one chart type from bar, line, pie, scatter, histogram.
+- For prediction, capture the target and feature inputs.
+- If the request is vague or unrelated, return intent=unknown.
 """
-
-    def _extract_json(self, text: str):
-        if not text:
-            return None
-
-        cleaned = text.strip()
-        if "```" in cleaned:
-            cleaned = cleaned.replace("```json", "").replace("```", "").strip()
-
-        return json.loads(cleaned)
 
     def _normalize_text(self, value: str):
         return re.sub(r"[^a-z0-9]+", " ", (value or "").lower()).strip()
@@ -80,6 +67,9 @@ Rules:
 
     def _coerce_value(self, value):
         if value is None:
+            return value
+
+        if isinstance(value, bool | int | float):
             return value
 
         raw = str(value).strip().strip("'\"")
@@ -151,15 +141,7 @@ Rules:
     def _extract_groupby(self, query: str, columns: list[str]):
         lower_query = query.lower()
 
-        for phrase in [
-            "group by ",
-            "grouped by ",
-            "groupby ",
-            "grouby ",
-            "gropuby ",
-            "per ",
-            "by ",
-        ]:
+        for phrase in ["group by ", "grouped by ", "per ", "by "]:
             if phrase not in lower_query:
                 continue
 
@@ -169,6 +151,20 @@ Rules:
                     return column
 
         return None
+
+    def _has_grouping_language(self, query: str):
+        normalized = self._normalize_text(query)
+        return any(
+            phrase in normalized
+            for phrase in ["group by", "grouped by", " based on ", " per ", " by "]
+        ) or normalized.startswith("group ")
+
+    def _has_listing_language(self, query: str):
+        normalized = self._normalize_text(query)
+        return any(
+            token in normalized.split()
+            for token in ["show", "list", "display", "give", "find"]
+        )
 
     def _extract_prediction_target(self, query: str, columns: list[str]):
         normalized_query = self._normalize_text(query)
@@ -187,7 +183,12 @@ Rules:
         matched_columns = self._match_columns(query, columns)
         return matched_columns[-1] if matched_columns else None
 
-    def _extract_prediction_inputs(self, query: str, columns: list[str], target: str | None = None):
+    def _extract_prediction_inputs(
+        self,
+        query: str,
+        columns: list[str],
+        target: str | None = None,
+    ):
         inputs = {}
         feature_columns = [column for column in (columns or []) if column != target]
         extracted_filters = self._extract_filters(query, feature_columns)
@@ -197,7 +198,11 @@ Rules:
 
         search_text = query
         if target:
-            target_match = re.search(rf"\b{re.escape(target)}\b(.*)$", query, flags=re.IGNORECASE)
+            target_match = re.search(
+                rf"\b{re.escape(target)}\b(.*)$",
+                query,
+                flags=re.IGNORECASE,
+            )
             if target_match:
                 search_text = target_match.group(1)
 
@@ -246,7 +251,11 @@ Rules:
         if any(word in lower_query for word in ["predict", "forecast", "estimate"]):
             intent = "prediction"
             target = self._extract_prediction_target(query, columns)
-            prediction_inputs = self._extract_prediction_inputs(query, columns, target=target)
+            prediction_inputs = self._extract_prediction_inputs(
+                query,
+                columns,
+                target=target,
+            )
         elif any(word in lower_query for word in chart_keywords):
             intent = "visualization"
             for keyword, chart_name in chart_keywords.items():
@@ -257,7 +266,10 @@ Rules:
             bool(operations)
             or bool(matched_columns)
             or bool(filters)
-            or any(word in lower_query for word in ["analyze", "analysis", "show", "what", "find", "list", "give me"])
+            or any(
+                word in lower_query
+                for word in ["analyze", "analysis", "show", "what", "find", "list", "give me"]
+            )
         ):
             intent = "analytics"
 
@@ -301,9 +313,9 @@ Rules:
 
         if operations:
             if not selected_columns and groupby:
-                fallback_columns = [column for column in (columns or []) if column != groupby]
-                if fallback_columns:
-                    selected_columns = [fallback_columns[0]]
+                selected_columns = [
+                    column for column in (columns or []) if column != groupby
+                ][:1]
             elif not selected_columns and columns:
                 selected_columns = [columns[0]]
 
@@ -317,40 +329,81 @@ Rules:
                         },
                     }
                 )
-
-        if not steps:
-            steps.append({"action": "limit", "value": 10})
+        elif selected_columns:
+            steps.append(
+                {
+                    "action": "select",
+                    "columns": selected_columns,
+                }
+            )
 
         return steps
+
+    def _is_incomplete_analysis_request(
+        self,
+        query: str,
+        columns: list[str],
+        operations: list[str],
+        filters: list[dict],
+        groupby: str | None,
+        steps: list[dict],
+    ):
+        if operations or filters:
+            return False
+
+        if groupby and not operations:
+            return True
+
+        if self._has_grouping_language(query) and not operations:
+            return True
+
+        if steps:
+            return False
+
+        if columns and self._has_listing_language(query):
+            return False
+
+        return True
 
     def _normalize_plan(self, raw_plan: dict, query: str, columns: list[str]):
         fallback_plan = self._fallback_plan(query, columns)
 
         intent = raw_plan.get("intent") or fallback_plan.get("intent", "unknown")
-        raw_columns = raw_plan.get("columns") or fallback_plan.get("columns") or self._match_columns(query, columns)
+        raw_columns = (
+            raw_plan.get("columns")
+            or fallback_plan.get("columns")
+            or self._match_columns(query, columns)
+        )
         chart_type = raw_plan.get("chart_type") or fallback_plan.get("chart_type")
         groupby = raw_plan.get("groupby") or fallback_plan.get("groupby")
         target = raw_plan.get("target") or fallback_plan.get("target")
         filters = raw_plan.get("filters") or fallback_plan.get("filters") or []
         operations = raw_plan.get("operations") or fallback_plan.get("operations") or []
-        prediction_inputs = raw_plan.get("prediction_inputs") or fallback_plan.get("prediction_inputs") or {}
+        prediction_inputs = (
+            raw_plan.get("prediction_inputs")
+            or fallback_plan.get("prediction_inputs")
+            or {}
+        )
 
         if isinstance(operations, str):
             operations = [operations]
 
-        operations = [item for item in operations if item in {"max", "min", "mean", "sum", "count"}]
+        operations = [
+            item for item in operations if item in {"max", "min", "mean", "sum", "count"}
+        ]
 
         value_columns = [column for column in raw_columns if column != groupby]
-
-        if target == groupby and value_columns:
-            target = value_columns[-1]
 
         if intent == "prediction":
             extracted_target = self._extract_prediction_target(query, columns)
             if extracted_target:
                 target = extracted_target
 
-            extracted_prediction_inputs = self._extract_prediction_inputs(query, columns, target=target)
+            extracted_prediction_inputs = self._extract_prediction_inputs(
+                query,
+                columns,
+                target=target,
+            )
             if extracted_prediction_inputs:
                 prediction_inputs = {
                     **prediction_inputs,
@@ -377,8 +430,7 @@ Rules:
         }
 
         if intent == "analytics":
-            normalized["type"] = "analysis"
-            normalized["steps"] = self._build_steps(
+            steps = self._build_steps(
                 {
                     "operations": operations,
                     "columns": raw_columns,
@@ -387,6 +439,18 @@ Rules:
                 },
                 columns,
             )
+            if self._is_incomplete_analysis_request(
+                query,
+                raw_columns,
+                operations,
+                filters,
+                groupby,
+                steps,
+            ):
+                normalized["type"] = "unknown"
+            else:
+                normalized["type"] = "analysis"
+                normalized["steps"] = steps
         elif intent == "visualization":
             normalized["type"] = "visualization"
             if normalized["chart"] == "histogram":
@@ -398,21 +462,20 @@ Rules:
 
     def plan(self, query: str, columns: list[str] | None = None, context=None):
         columns = columns or []
-
         prompt = f"""
 Available columns: {columns}
 Conversation context: {context or []}
 User query: {query}
 """
 
-        text, _ = generate_text(self.system_prompt, prompt, temperature=0)
-        if text:
-            try:
-                raw_plan = self._extract_json(text)
-                if isinstance(raw_plan, dict):
-                    return self._normalize_plan(raw_plan, query, columns)
-            except Exception:
-                pass
+        llm_result, _ = llm_service.invoke_structured(
+            self.system_prompt,
+            prompt,
+            PlannerSchema,
+            temperature=0,
+        )
+        if llm_result is not None:
+            return self._normalize_plan(llm_result.model_dump(), query, columns)
 
         raw_plan = self._fallback_plan(query, columns)
         return self._normalize_plan(raw_plan, query, columns)

@@ -2,7 +2,7 @@
 
 DataMind is an AI-powered data analysis tool with built-in AutoML capabilities. It lets users upload tabular data, explore cleaned records, ask natural-language questions, generate charts, and run lightweight machine-learning predictions from the same workspace.
 
-## Highlights
+## ✨ Highlights
 
 - Upload datasets in `CSV`, `Excel`, or `JSON` format.
 - Run an automatic cleaning pipeline after upload.
@@ -10,9 +10,9 @@ DataMind is an AI-powered data analysis tool with built-in AutoML capabilities. 
 - Ask data analysis questions in natural language.
 - View answers as text, tables, charts, or prediction cards.
 - Run AutoML-based predictions from user-provided feature values.
-- Keep short conversational memory across recent chat turns.
+- Keep dataset work isolated with session-based processing.
 
-## Tech Stack
+## 🛠️ Tech Stack
 
 ### Backend
 
@@ -21,17 +21,19 @@ DataMind is an AI-powered data analysis tool with built-in AutoML capabilities. 
 - Pandas
 - NumPy
 - scikit-learn
+- XGBoost
 - Matplotlib
-- Google GenAI client support for LLM-based planning and summarization
+- LangChain
+- LangChain Google GenAI
 
 ### Frontend
 
 - React
 - Vite
 - Axios
-- Tailwind CSS utilities
+- Tailwind CSS
 
-## Architecture
+## 🏗️ Architecture
 
 ### Backend
 
@@ -44,7 +46,6 @@ The backend is responsible for:
 - running analytics, chart generation, and AutoML predictions
 - returning JSON-safe responses to the frontend
 
-
 ### Frontend
 
 The frontend provides:
@@ -54,7 +55,7 @@ The frontend provides:
 - chat-driven analysis UI
 - prediction and chart rendering components
 
-## Project Structure
+## 📁 Project Structure
 
 ```text
 DataMind/
@@ -62,6 +63,7 @@ DataMind/
 |  |- core/
 |  |- ml/
 |  |- routes/
+|  |- schemas/
 |  |- services/
 |  |- main.py
 |  `- pyproject.toml
@@ -74,9 +76,9 @@ DataMind/
 `- README.md
 ```
 
-## Features in Detail
+## 🚀 Features In Detail
 
-### 1. Dataset Upload and Cleaning
+### 1. 📂 Dataset Upload And Cleaning
 
 After upload, DataMind:
 
@@ -84,10 +86,10 @@ After upload, DataMind:
 - loads the dataset into a Pandas DataFrame
 - removes duplicate rows
 - applies data cleaning utilities
-- performs outlier correction for numeric fields
+- analyzes possible outliers and missing values
 - builds a report with overview metrics and warnings
 
-### 2. Natural-Language Analytics
+### 2. 💬 Natural-Language Analytics
 
 Users can ask questions such as:
 
@@ -97,7 +99,7 @@ Users can ask questions such as:
 
 The planner converts prompts into structured execution steps, then the execution layer returns either a short text answer or a table payload.
 
-### 3. Visualizations
+### 3. 📊 Visualizations
 
 Chart prompts are converted into backend-generated chart images. Supported chart types include:
 
@@ -107,7 +109,7 @@ Chart prompts are converted into backend-generated chart images. Supported chart
 - `histogram`
 - `pie`
 
-### 4. Predictions
+### 4. 🤖 Predictions
 
 Prediction prompts can estimate a target column from feature values, for example:
 
@@ -122,8 +124,18 @@ The backend includes a lightweight AutoML flow that trains candidate models on t
 - input values
 - feature importance payload
 
+Current model families:
 
-## Local Setup
+- Regression:
+  - `Linear Regression`
+  - `Random Forest`
+  - `XGBoost`
+- Classification:
+  - `Logistic Regression`
+  - `Random Forest`
+  - `XGBoost`
+
+## ⚙️ Local Setup
 
 ### 1. Backend
 
@@ -132,7 +144,7 @@ From the `Backend` directory:
 ```bash
 python -m venv .venv
 .\.venv\Scripts\activate
-pip install -e .
+pip install -r requirements.txt
 python -m uvicorn main:app --reload
 ```
 
@@ -144,6 +156,11 @@ If you want LLM-assisted planning and summaries, create a `.env` file inside `Ba
 
 ```env
 GEMINI_API_KEY=your_key_here
+LLM_MODEL=gemini-2.5-flash
+CORS_ORIGINS=http://localhost:5173,http://127.0.0.1:5173
+MAX_UPLOAD_MB=25
+SESSION_TTL_MINUTES=90
+APPLY_OUTLIER_CORRECTION=false
 ```
 
 Without it, the app falls back to rule-based planning for supported prompts.
@@ -159,7 +176,24 @@ npm run dev
 
 Frontend runs at `http://localhost:5173`.
 
-## Typical Workflow
+Optional frontend environment variable:
+
+```env
+VITE_API_BASE_URL=http://localhost:8000
+```
+
+## 🔌 API Endpoints
+
+- `POST /upload` - Upload a dataset and start a new session.
+- `GET /dataset` - Get paginated dataset preview for the active session.
+- `POST /chat` - Send a chat query for the active session.
+
+Required header for dataset and chat requests:
+
+```http
+X-Session-ID: <session-id>
+
+## 📝 Typical Workflow
 
 1. Start the backend.
 2. Start the frontend.

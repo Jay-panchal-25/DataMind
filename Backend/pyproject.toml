@@ -6,17 +6,15 @@ readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
     "fastapi>=0.131.0",
-    "google-genai>=1.73.1",
-    "google-generativeai>=0.8.6",
+    "langchain>=0.3.27",
+    "langchain-google-genai>=2.1.5",
     "matplotlib>=3.10.9",
     "numpy>=2.4.2",
     "pandas>=3.0.1",
-    "pathlib>=1.0.1",
-    "python-dateutil>=2.9.0.post0",
     "python-dotenv>=1.2.2",
     "python-multipart>=0.0.22",
     "scikit-learn>=1.8.0",
-    "typing>=3.10.0.0",
     "uvicorn>=0.41.0",
     "word2number>=1.1",
+    "xgboost>=3.1.0",
 ]

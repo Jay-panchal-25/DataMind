@@ -5,27 +5,27 @@ import pandas as pd
 IDENTIFIER_KEYWORDS = {"id", "code", "index"}
 
 
-def clean(df: pd.DataFrame, method: str = "median", iqr_multiplier: float = 2.0) -> pd.DataFrame:
-    """
-    Fill missing numeric values and replace numeric outliers using an IQR-based rule.
-    This is more reliable than z-score for small and skewed datasets.
-    """
-    df = df.copy()
-    numeric_cols = df.select_dtypes(include=[np.number]).columns
+def analyze_outliers(
+    df: pd.DataFrame,
+    *,
+    apply_changes: bool = False,
+    method: str = "median",
+    iqr_multiplier: float = 2.0,
+):
+    output = df.copy()
+    numeric_cols = output.select_dtypes(include=[np.number]).columns
+    columns_affected = {}
+    candidate_counts = {}
 
     for col in numeric_cols:
-        if _is_identifier_like(col, df[col]):
+        if _is_identifier_like(col, output[col]):
             continue
 
-        series = pd.to_numeric(df[col], errors="coerce").astype("Float64")
-
-        if series.isna().any():
-            fill_value = series.median() if method == "median" else series.mean()
-            series = series.fillna(fill_value)
-
+        series = pd.to_numeric(output[col], errors="coerce").astype("Float64")
         non_null = series.dropna()
+
         if non_null.empty or non_null.nunique() <= 2:
-            df[col] = series
+            output[col] = series
             continue
 
         q1 = non_null.quantile(0.25)
@@ -33,20 +33,33 @@ def clean(df: pd.DataFrame, method: str = "median", iqr_multiplier: float = 2.0)
         iqr = q3 - q1
 
         if pd.isna(iqr) or iqr == 0:
-            df[col] = series
+            output[col] = series
             continue
 
         lower_bound = q1 - iqr_multiplier * iqr
         upper_bound = q3 + iqr_multiplier * iqr
         outlier_mask = (series < lower_bound) | (series > upper_bound)
+        candidate_count = int(outlier_mask.sum())
 
-        if outlier_mask.any():
+        if candidate_count <= 0:
+            output[col] = series
+            continue
+
+        candidate_counts[col] = candidate_count
+        if apply_changes:
             replacement = non_null.median() if method == "median" else non_null.mean()
             series.loc[outlier_mask] = replacement
+            columns_affected[col] = candidate_count
 
-        df[col] = series
+        output[col] = series
 
-    return df
+    return output, {
+        "applied": apply_changes,
+        "candidate_columns": candidate_counts,
+        "columns_affected": columns_affected,
+        "total_candidates": int(sum(candidate_counts.values())),
+        "total_changes": int(sum(columns_affected.values())),
+    }
 
 
 def _is_identifier_like(column_name: str, series: pd.Series):

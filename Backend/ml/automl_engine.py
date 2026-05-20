@@ -1,174 +1,359 @@
-import pandas as pd
 import numpy as np
+import pandas as pd
 
+from sklearn.compose import ColumnTransformer
 from sklearn.ensemble import (
-    GradientBoostingClassifier,
-    GradientBoostingRegressor,
     RandomForestClassifier,
     RandomForestRegressor,
 )
-from sklearn.metrics import accuracy_score, mean_squared_error, r2_score
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import LabelEncoder, StandardScaler
-from pandas.api.types import is_bool_dtype, is_numeric_dtype, is_object_dtype, is_string_dtype
+from sklearn.linear_model import LinearRegression, LogisticRegression
+from sklearn.impute import SimpleImputer
+from sklearn.metrics import (
+    accuracy_score,
+    f1_score,
+    mean_absolute_error,
+    mean_squared_error,
+    r2_score,
+)
+from sklearn.model_selection import cross_val_score, train_test_split
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
+
+from core.settings import settings
+
+try:
+    from xgboost import XGBClassifier, XGBRegressor
+except ImportError:
+    XGBClassifier = None
+    XGBRegressor = None
 
 
 class AutoMLEngine:
-
     def __init__(self, df: pd.DataFrame):
         self.df = df.copy()
-        self.model = None
         self.problem_type = None
-        self.encoders = {}
-        self.scaler = None
         self.best_model_name = None
+        self.model = None
         self.feature_columns = []
+        self.target_column = None
+        self.transformed_feature_names = []
+        self.target_labels = None
 
-    def detect_problem_type(self, target_col):
-        if is_numeric_dtype(self.df[target_col]):
-            return "regression"
+    def detect_problem_type(self, target_col: str):
+        target = self.df[target_col]
 
-        if (
-            is_object_dtype(self.df[target_col])
-            or is_string_dtype(self.df[target_col])
-            or is_bool_dtype(self.df[target_col])
-        ):
+        if pd.api.types.is_bool_dtype(target):
             return "classification"
 
-        return "regression"
+        if pd.api.types.is_numeric_dtype(target):
+            unique_count = target.nunique(dropna=True)
+            uniqueness_ratio = unique_count / max(len(target.dropna()), 1)
+            if 2 <= unique_count <= 12 and uniqueness_ratio <= 0.2:
+                return "classification"
+            return "regression"
 
-    def preprocess(self, target_col):
-        df = self.df.dropna().copy()
+        return "classification"
 
-        X = df.drop(columns=[target_col])
-        y = df[target_col]
+    def _normalize_features(self, frame: pd.DataFrame):
+        normalized = frame.copy()
+
+        for column in normalized.columns:
+            series = normalized[column]
+
+            if pd.api.types.is_numeric_dtype(series):
+                normalized[column] = pd.to_numeric(series, errors="coerce").astype(float)
+                continue
+
+            if pd.api.types.is_bool_dtype(series):
+                normalized[column] = (
+                    series.astype("boolean").astype("object").where(series.notna(), None)
+                )
+                continue
+
+            normalized[column] = (
+                series.astype("object").where(pd.notna(series), None)
+            )
+
+        return normalized
+
+    def _prepare_dataset(self, target_col: str):
+        data = self.df.dropna(subset=[target_col]).copy()
+        if data.empty:
+            raise ValueError("No training rows remain after removing empty target values.")
+
+        X = self._normalize_features(data.drop(columns=[target_col]).copy())
+        y = data[target_col].copy()
         self.feature_columns = X.columns.tolist()
+        self.target_column = target_col
+        self.target_labels = None
 
-        for col in X.columns:
-            if is_object_dtype(X[col]) or is_string_dtype(X[col]) or is_bool_dtype(X[col]):
-                le = LabelEncoder()
-                X[col] = le.fit_transform(X[col].astype(str))
-                self.encoders[col] = le
-            elif not is_numeric_dtype(X[col]):
-                X[col] = pd.to_numeric(X[col], errors="coerce")
+        if self.problem_type == "regression":
+            y = pd.to_numeric(y, errors="coerce").astype(float)
+        elif self.problem_type == "classification" and not pd.api.types.is_numeric_dtype(y):
+            categories = pd.Categorical(y.astype(str))
+            self.target_labels = {
+                index: label for index, label in enumerate(categories.categories.tolist())
+            }
+            y = pd.Series(categories.codes, index=y.index)
 
-        if is_object_dtype(y) or is_string_dtype(y) or is_bool_dtype(y):
-            le = LabelEncoder()
-            y = le.fit_transform(y.astype(str))
-            self.encoders[target_col] = le
+        numeric_features = X.select_dtypes(include="number").columns.tolist()
+        categorical_features = [
+            column for column in X.columns if column not in numeric_features
+        ]
 
-        self.scaler = StandardScaler()
-        X = self.scaler.fit_transform(X)
+        numeric_pipeline = Pipeline(
+            steps=[
+                ("imputer", SimpleImputer(strategy="median")),
+                ("scaler", StandardScaler()),
+            ]
+        )
+        categorical_pipeline = Pipeline(
+            steps=[
+                ("imputer", SimpleImputer(strategy="most_frequent")),
+                (
+                    "encoder",
+                    OneHotEncoder(
+                        handle_unknown="ignore",
+                        sparse_output=False,
+                    ),
+                ),
+            ]
+        )
 
-        return X, y
+        preprocessor = ColumnTransformer(
+            transformers=[
+                ("num", numeric_pipeline, numeric_features),
+                ("cat", categorical_pipeline, categorical_features),
+            ],
+            remainder="drop",
+        )
+
+        return X, y, preprocessor
 
     def get_models(self):
         if self.problem_type == "classification":
+            models = {
+                "logistic_regression": LogisticRegression(
+                    max_iter=2000,
+                    class_weight="balanced",
+                    random_state=42,
+                ),
+                "random_forest": RandomForestClassifier(
+                    n_estimators=250,
+                    random_state=42,
+                    class_weight="balanced",
+                ),
+            }
+            if XGBClassifier is not None:
+                models["xgboost"] = XGBClassifier(
+                    n_estimators=250,
+                    max_depth=6,
+                    learning_rate=0.08,
+                    subsample=0.9,
+                    colsample_bytree=0.9,
+                    eval_metric="logloss",
+                    random_state=42,
+                )
+            return models
+
+        models = {
+            "linear_regression": LinearRegression(),
+            "random_forest": RandomForestRegressor(
+                n_estimators=250,
+                random_state=42,
+            ),
+        }
+        if XGBRegressor is not None:
+            models["xgboost"] = XGBRegressor(
+                n_estimators=350,
+                max_depth=6,
+                learning_rate=0.08,
+                subsample=0.9,
+                colsample_bytree=0.9,
+                objective="reg:squarederror",
+                random_state=42,
+            )
+        return models
+
+    def _score_pipeline(self, pipeline, X, y):
+        scoring = "accuracy" if self.problem_type == "classification" else "r2"
+        folds = min(settings.AUTOML_CV_FOLDS, max(len(X), 2))
+        if self.problem_type == "classification":
+            class_counts = y.value_counts()
+            if class_counts.min() < 2 or folds < 2:
+                return None
+            folds = min(folds, int(class_counts.min()))
+        elif folds < 2:
+            return None
+
+        scores = cross_val_score(pipeline, X, y, cv=folds, scoring=scoring)
+        mean_score = float(np.mean(scores))
+        if np.isnan(mean_score) or np.isinf(mean_score):
+            return None
+        return mean_score
+
+    def _extract_feature_names(self):
+        if self.model is None:
+            return []
+
+        preprocessor = self.model.named_steps["preprocessor"]
+        try:
+            feature_names = preprocessor.get_feature_names_out()
+            return [str(item) for item in feature_names]
+        except Exception:
+            return self.feature_columns
+
+    def _collect_metrics(self, y_test, predictions):
+        if self.problem_type == "classification":
             return {
-                "rf": RandomForestClassifier(n_estimators=100, random_state=42),
-                "gb": GradientBoostingClassifier(random_state=42),
+                "accuracy": float(accuracy_score(y_test, predictions)),
+                "f1_weighted": float(
+                    f1_score(y_test, predictions, average="weighted")
+                ),
             }
 
         return {
-            "rf": RandomForestRegressor(n_estimators=100, random_state=42),
-            "gb": GradientBoostingRegressor(random_state=42),
+            "r2": float(r2_score(y_test, predictions)),
+            "rmse": float(np.sqrt(mean_squared_error(y_test, predictions))),
+            "mae": float(mean_absolute_error(y_test, predictions)),
         }
 
-    def train(self, target_col):
-        self.problem_type = self.detect_problem_type(target_col)
-        X, y = self.preprocess(target_col)
-
-        X_train, X_test, y_train, y_test = train_test_split(
-            X, y, test_size=0.2, random_state=42
+    def _metric_for_selection(self, metrics: dict):
+        value = (
+            metrics.get("accuracy")
+            if self.problem_type == "classification"
+            else metrics.get("r2")
         )
 
-        models = self.get_models()
+        if value is not None:
+            value = float(value)
+            if not np.isnan(value) and not np.isinf(value):
+                return value
+
+        if self.problem_type == "regression":
+            rmse = metrics.get("rmse")
+            if rmse is not None:
+                rmse = float(rmse)
+                if not np.isnan(rmse) and not np.isinf(rmse):
+                    return -rmse
+
+        return None
+
+    def train(self, target_col: str):
+        self.problem_type = self.detect_problem_type(target_col)
+        X, y, preprocessor = self._prepare_dataset(target_col)
+
+        if len(X) < 5:
+            raise ValueError("Prediction requires at least 5 non-empty rows.")
+
+        stratify = (
+            y if self.problem_type == "classification" and y.nunique() > 1 else None
+        )
+        X_train, X_test, y_train, y_test = train_test_split(
+            X,
+            y,
+            test_size=0.2,
+            random_state=42,
+            stratify=stratify,
+        )
 
         best_score = -float("inf")
-        best_model = None
+        best_pipeline = None
         best_name = None
-        results = {}
+        model_scores = {}
+        holdout_metrics = {}
 
-        for name, model in models.items():
-            model.fit(X_train, y_train)
-            preds = model.predict(X_test)
+        for name, model in self.get_models().items():
+            pipeline = Pipeline(
+                steps=[
+                    ("preprocessor", preprocessor),
+                    ("model", model),
+                ]
+            )
 
-            if self.problem_type == "classification":
-                score = accuracy_score(y_test, preds)
-            else:
-                score = r2_score(y_test, preds)
+            cv_score = self._score_pipeline(pipeline, X_train, y_train)
+            pipeline.fit(X_train, y_train)
+            predictions = pipeline.predict(X_test)
+            metrics = self._collect_metrics(y_test, predictions)
 
-            results[name] = float(score)
+            selection_score = cv_score
+            if selection_score is None:
+                selection_score = self._metric_for_selection(metrics)
+            if selection_score is None:
+                selection_score = -float("inf")
 
-            if score > best_score:
-                best_score = score
-                best_model = model
+            model_scores[name] = {
+                "cv_score": None if cv_score is None else float(cv_score),
+                "holdout": metrics,
+            }
+            holdout_metrics[name] = metrics
+
+            if best_pipeline is None or selection_score > best_score:
+                best_score = selection_score
+                best_pipeline = pipeline
                 best_name = name
 
-        self.model = best_model
+        if best_pipeline is None:
+            raise ValueError(
+                "Could not train a usable prediction model for this dataset."
+            )
+
+        self.model = best_pipeline
         self.best_model_name = best_name
+        self.transformed_feature_names = self._extract_feature_names()
 
-        metrics = (
-            {"accuracy": float(best_score)}
-            if self.problem_type == "classification"
-            else {
-                "r2": float(best_score),
-                "rmse": float(np.sqrt(mean_squared_error(y_test, best_model.predict(X_test)))),
-            }
-        )
+        best_predictions = best_pipeline.predict(X_test)
+        metrics = self._collect_metrics(y_test, best_predictions)
+        metrics["selection_score"] = float(best_score)
 
-        return best_score, X_test, results, metrics
+        return {
+            "metrics": metrics,
+            "all_model_scores": model_scores,
+            "training_rows": int(len(X_train)),
+            "validation_rows": int(len(X_test)),
+        }
 
-    def explain(self, X_sample):
-        try:
-            import shap
+    def feature_importance(self):
+        if self.model is None:
+            return {}
 
-            explainer = shap.TreeExplainer(self.model)
-            shap_values = explainer.shap_values(X_sample)
+        estimator = self.model.named_steps["model"]
+        importances = getattr(estimator, "feature_importances_", None)
+        if importances is None:
+            return {}
 
-            if isinstance(shap_values, list):
-                shap_values = shap_values[0]
-
-            importance = np.abs(shap_values).mean(axis=0)
-            return importance.tolist()
-
-        except Exception:
-            return [0.0] * X_sample.shape[1]
+        feature_names = self.transformed_feature_names or self.feature_columns
+        pairs = [
+            (name, float(score))
+            for name, score in zip(feature_names, importances)
+        ]
+        pairs.sort(key=lambda item: item[1], reverse=True)
+        return dict(pairs[:12])
 
     def predict_single(self, raw_inputs: dict):
-        if not self.feature_columns:
+        if self.model is None:
             return None, "Prediction model is not initialized."
 
         missing_features = [
-            column for column in self.feature_columns
-            if column not in raw_inputs
+            column for column in self.feature_columns if column not in raw_inputs
         ]
         if missing_features:
             return None, f"Missing input values for: {', '.join(missing_features)}"
 
-        row = {}
-        for column in self.feature_columns:
-            value = raw_inputs[column]
+        input_df = self._normalize_features(pd.DataFrame(
+            [{column: raw_inputs.get(column) for column in self.feature_columns}]
+        ))
 
-            if column in self.encoders:
-                encoder = self.encoders[column]
-                classes = set(encoder.classes_)
-                value_as_text = str(value)
-                if value_as_text not in classes:
-                    return None, (
-                        f"Unknown value '{value}' for {column}. "
-                        f"Expected one of: {', '.join(map(str, encoder.classes_[:10]))}"
-                    )
-                row[column] = encoder.transform([value_as_text])[0]
-            else:
-                try:
-                    row[column] = float(value)
-                except Exception:
-                    return None, f"Could not convert {column} value '{value}' to a number."
+        try:
+            prediction = self.model.predict(input_df)[0]
+        except Exception as exc:
+            return None, f"Prediction failed: {str(exc)}"
 
-        input_df = pd.DataFrame([row], columns=self.feature_columns)
-        transformed = self.scaler.transform(input_df)
-        prediction = self.model.predict(transformed)[0]
+        if isinstance(prediction, np.generic):
+            prediction = prediction.item()
+
+        if self.problem_type == "classification" and self.target_labels is not None:
+            prediction = self.target_labels.get(int(prediction), prediction)
 
         return prediction, None
 
@@ -176,36 +361,25 @@ class AutoMLEngine:
         if target_col not in self.df.columns:
             return {"error": f"{target_col} not found"}
 
-        _, X_test, all_scores, metrics = self.train(target_col)
-        sample = X_test[:50]
-        importance = self.explain(sample)
-
-        feature_importance = {
-            feature: float(score)
-            for feature, score in zip(self.feature_columns, importance)
-        }
-
+        training_summary = self.train(target_col)
         prediction_value = None
+
         if prediction_inputs:
             prediction_value, error = self.predict_single(prediction_inputs)
             if error:
                 return {"error": error}
-
-            if target_col in self.encoders:
-                prediction_value = self.encoders[target_col].inverse_transform(
-                    [int(prediction_value)]
-                )[0]
-            elif isinstance(prediction_value, np.generic):
-                prediction_value = prediction_value.item()
 
         return {
             "type": "prediction",
             "model": self.best_model_name,
             "task_type": self.problem_type,
             "target": target_col,
-            "metrics": metrics,
+            "metrics": training_summary["metrics"],
             "predictions": [prediction_value] if prediction_inputs else None,
-            "all_model_scores": all_scores,
-            "feature_importance": feature_importance,
+            "all_model_scores": training_summary["all_model_scores"],
+            "feature_importance": self.feature_importance(),
             "input_values": prediction_inputs or None,
+            "training_rows": training_summary["training_rows"],
+            "validation_rows": training_summary["validation_rows"],
+            "xgboost_available": XGBClassifier is not None and XGBRegressor is not None,
         }

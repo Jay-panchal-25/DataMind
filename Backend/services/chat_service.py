@@ -2,18 +2,19 @@ import re
 
 import pandas as pd
 
-from services.answer_synthesizer import synthesize_answer
 from services.execution_engine import execute_analysis
 from services.llm_planner import generate_plan
 from services.memory_manager import MemoryManager
+from services.model_registry import model_registry
 from services.visualization_service import generate_visualization
 
 
 class ChatService:
-
-    def __init__(self, dataframe, memory=None):
+    def __init__(self, dataframe, memory=None, session_state=None, quality=None):
         self.df = dataframe
         self.memory = memory or MemoryManager()
+        self.session_state = session_state
+        self.quality = quality or {}
 
     def process(self, user_message: str):
         if not user_message or not user_message.strip():
@@ -68,9 +69,8 @@ class ChatService:
                 }
             elif result.get("type") == "table":
                 response = {
-                    "type": "analysis",
+                    "type": "table",
                     "content": {
-                        "summary": synthesize_answer(user_message, plan, result),
                         "columns": result.get("columns", []),
                         "rows": result.get("rows", []),
                     }
@@ -97,10 +97,53 @@ class ChatService:
 
         elif plan["type"] == "prediction":
             target = plan.get("target")
+            if not target:
+                response = {
+                    "type": "text",
+                    "content": "Please specify which column you want to predict.",
+                }
+                self.memory.add(user_message, response)
+                return response
 
-            from ml.automl_engine import AutoMLEngine
-            automl = AutoMLEngine(self.df)
-            result = automl.run(target, prediction_inputs=plan.get("prediction_inputs"))
+            cached_bundle = (
+                model_registry.get(self.session_state, target)
+                if self.session_state is not None
+                else None
+            )
+
+            if cached_bundle is not None:
+                result = dict(cached_bundle.result)
+                if plan.get("prediction_inputs"):
+                    prediction_value, error = cached_bundle.engine.predict_single(
+                        plan.get("prediction_inputs")
+                    )
+                    if error:
+                        result = {"error": error}
+                    else:
+                        result["predictions"] = [prediction_value]
+                        result["input_values"] = plan.get("prediction_inputs")
+                        result["cached"] = True
+            else:
+                from ml.automl_engine import AutoMLEngine
+
+                automl = AutoMLEngine(self.df)
+                try:
+                    result = automl.run(
+                        target,
+                        prediction_inputs=plan.get("prediction_inputs"),
+                    )
+                except Exception as exc:
+                    result = {"error": str(exc)}
+                if "error" not in result and self.session_state is not None:
+                    cached_result = dict(result)
+                    cached_result["predictions"] = None
+                    cached_result["input_values"] = None
+                    model_registry.set(
+                        self.session_state,
+                        target,
+                        automl,
+                        cached_result,
+                    )
 
             if "error" in result:
                 response = {
@@ -108,6 +151,7 @@ class ChatService:
                     "content": result["error"]
                 }
             else:
+                result["quality_warnings"] = self.quality.get("warnings", [])
                 response = {
                     "type": "prediction",
                     "content": result
@@ -124,16 +168,10 @@ class ChatService:
 
     def _handle_smalltalk(self, user_message: str):
         normalized = user_message.strip().lower()
-        greetings = {
-            "hi",
-            "hello",
-            "hey",
-            "good morning",
-            "good afternoon",
-            "good evening",
-        }
-
-        if normalized in greetings:
+        if re.fullmatch(
+            r"(hi+|hello+|hey+|good morning|good afternoon|good evening|hola|namaste)[\!\.\s]*",
+            normalized,
+        ):
             return {
                 "type": "text",
                 "content": "Hello! Your dataset is ready. Ask me a question about the data."
@@ -182,9 +220,8 @@ class ChatService:
             }
 
         return {
-            "type": "analysis",
+            "type": "table",
             "content": {
-                "summary": f"I found the row(s) with the {operation} {metric_column}.",
                 "columns": result.columns.tolist(),
                 "rows": result.astype("object").where(pd.notna(result), None).to_dict(orient="records"),
             },
